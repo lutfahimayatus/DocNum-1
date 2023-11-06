@@ -35,11 +35,14 @@
                         <li @if (Route::currentRouteName() == 'jenis.index') class="active" @endif>
                             <a href="{{ route('jenis.index')}}">Jenis Dokumen</a>
                         </li>
+                        <li @if (Route::currentRouteName() == 'div.index') class="active" @endif>
+                            <a href="{{ route('div.index')}}">Divisi</a>
+                        </li>
                     </ul>
                 </div>
             </li>
-            <li @if (Route::currentRouteName() == '') class="active" @endif>
-                <a href="#">
+            <li @if (Route::currentRouteName() == 'document.index') class="active" @endif>
+                <a href="{{ route('document.index')}}">
                     <i class='bx bx-history' ></i>
                     <div class="item-container"> 
                         <span class="link_name">Riwayat</span>
@@ -55,7 +58,7 @@
                 </a>
             </li>
             @else
-            <li>
+            <li @if (Route::currentRouteName() == 'employee.document' || Route::currentRouteName() == 'employee.generate' || Route::currentRouteName() == 'employee.detail') class="active" @endif>
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-file'></i>
@@ -65,8 +68,12 @@
                         </div>
                     </a>
                     <ul class="sub-menu">
-                        <li><a href="#">Generate No. Dokumen</a></li>
-                        <li><a href="#">Riwayat</a></li>
+                        <li @if (Route::currentRouteName() == 'employee.generate') class="active" @endif>
+                            <a href="{{ route('employee.generate')}}">Generate No. Dokumen</a>
+                        </li>
+                        <li @if (Route::currentRouteName() == 'employee.document' || Route::currentRouteName() == 'employee.detail') class="active" @endif>
+                            <a href="{{ route('employee.document')}}">Riwayat</a>
+                        </li>
                     </ul>
                 </div>
             </li>

@@ -38,6 +38,10 @@ class AuthController extends Controller
             try {
                 $registerUser = User::create([
                     'name' => '',
+                    'email' => '',
+                    'nomor_hp' => '',
+                    'foto_profile' => '',
+                    'divisi_id' => null,
                     'nip' => $request->input('nip'),
                     'role' => $request->input('role'),
                     'password' => bcrypt($request->input('password')),
@@ -76,7 +80,7 @@ class AuthController extends Controller
                 UserLogs::logAction($request, 'ATTEMPT LOGIN USER', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
                 return redirect('/dashboard')->with('success', 'Login berhasil!');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT LOGIN USER', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT LOGIN USER', $request->input('nip'), '', '{"isStatus": false, "pesan": "Gagal"}');
                 return redirect('/login')->with('error', 'Password salah!');
             }
         } 

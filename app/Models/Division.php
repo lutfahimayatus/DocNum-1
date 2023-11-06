@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class Division extends Model
 {
     use HasFactory;
 
     public $timestamps = true;
-    protected $table = 'categories';
+    protected $table = 'divisions';
 
     protected $fillable = [
-        'desc',
+        'divisi',
+        'kode'
     ];
 }

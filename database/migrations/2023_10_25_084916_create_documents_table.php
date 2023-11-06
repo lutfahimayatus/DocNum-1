@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('users')->constrained('users');
             $table->string('document_number');
             $table->string('document');
-            $table->foreignId('jenis')->constraint('jenis');
+            $table->foreignId('jenis_id')->constraint('jenis');
             $table->string('file');
             $table->enum('status', ['belum_upload', 'sudah_upload', 'verifikasi_berkas', 'disposisi', 'selesai']);
             $table->timestamps();

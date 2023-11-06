@@ -40,7 +40,7 @@
                     <img src="{{ asset('assets/img/users.svg')}}" alt="">
                 </div>
             </div>
-            <a href="{{ route('nip.index')}}">Selengkapnya <i class='bx bx-chevron-right' ></i></a>
+            <a href="{{ route('cat.index')}}">Selengkapnya <i class='bx bx-chevron-right' ></i></a>
         </div>
     </div>
     @else 

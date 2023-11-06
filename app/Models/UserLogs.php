@@ -10,6 +10,7 @@ class UserLogs extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
     protected $fillable = [
         'ip',
         'users',

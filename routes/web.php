@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\NIPController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLogController;
+use App\Http\Controllers\DivisionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,13 @@ Route::middleware(['auth'])->group(function () {
             Route::match(['get', 'post'], 'profile/{id}', 'profile')->name('profile');
             Route::match(['get', 'post'], 'profile/{id}/ganti/kata/sandi', 'changePassword')->name('profile.change.password');
         });
+        Route::middleware(['role:employee'])->group(function () {
+            Route::controller(DocumentController::class)->group(function () {
+                Route::get('document/history', 'index')->name('employee.document');
+                Route::match(['get', 'post'], 'document/generate', 'generateDocument')->name('employee.generate');
+                Route::get('document/detail/employee/{id}', 'detailDocument')->name('employee.detail');
+            });
+        });
         Route::middleware(['role:administrator'])->group(function () {
             Route::controller(UserController::class)->group(function () {
                 Route::get('/user', 'index')->name('user.index');
@@ -56,6 +65,12 @@ Route::middleware(['auth'])->group(function () {
                 Route::match(['get', 'post'], '/category/create', 'store')->name('cat.create');
                 Route::match(['get', 'post'], '/category/{id}/update', 'update')->name('cat.update');
             });
+            Route::controller(DivisionController::class)->group(function () {
+                Route::get('/division', 'index')->name('div.index');
+                Route::get('/division/{id}/delete', 'delete')->name('div.delete');
+                Route::match(['get', 'post'], '/division/create', 'store')->name('div.create');
+                Route::match(['get', 'post'], '/division/{id}/update', 'update')->name('div.update');
+            });
             Route::controller(JenisController::class)->group(function () {
                 Route::get('/jenis', 'index')->name('jenis.index');
                 Route::get('/jenis/{id}/delete', 'delete')->name('jenis.delete');
@@ -68,6 +83,13 @@ Route::middleware(['auth'])->group(function () {
                 Route::match(['get', 'post'], '/nip/create', 'store')->name('nip.create');
                 Route::match(['get', 'post'], '/nip/{id}/update', 'update')->name('nip.update');
                 Route::post('/nip/csv', 'csv')->name('nip.csv');
+            });
+            Route::controller(DocumentController::class)->group(function () {
+                Route::get('/document', 'index')->name('document.index');
+                Route::get('document/detail/{id}', 'detailDocument')->name('document.detail');
+                Route::match(['get', 'post'], '/document/{id}/update', 'update')->name('document.update');
+                Route::get('/document/download/single/{id}', 'downloadSingle')->name('document.download.single');
+                Route::get('/document/download/all', 'downloadAll')->name('docuemnt.download.all');
             });
         });
     });

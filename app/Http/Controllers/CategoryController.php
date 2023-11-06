@@ -29,7 +29,7 @@ class CategoryController extends Controller
             ];
 
             $this->validate($request, $rules, $messages);
-    
+
             $addCategories = Categories::create([
                 'desc' => $request->input('desc'),
             ]);
@@ -67,7 +67,7 @@ class CategoryController extends Controller
             if ($data->save()) {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
 
-                return redirect()->route('cat.update', $id)
+                return redirect()->route('cat.index', $id)
                     ->with('success', 'Category information updated successfully');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
@@ -78,7 +78,7 @@ class CategoryController extends Controller
         } 
     
         $data = Categories::find($id);
-        $title = 'Perbarui Kategori';
+        $title = 'Update Kategori';
         UserLogs::logAction($request, 'Data Access ID:'.$id, Auth::user()->nip, 'UpdateCategory', '');
         return view('pages.category.update', compact('data', 'title'));
     }

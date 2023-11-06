@@ -11,12 +11,21 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'email',
+        'nomor_hp',
+        'foto_profile',
         'role',
         'nip',
+        'divisi_id',
         'password',
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    public function divisi()
+    {
+        return $this->belongsTo(Division::class, 'divisi_id');
+    }
 }

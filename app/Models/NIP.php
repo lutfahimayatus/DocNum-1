@@ -9,6 +9,7 @@ class NIP extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
     protected $table = 'nips';
 
     protected $fillable = [

@@ -15,9 +15,13 @@ class Admin extends Seeder
     {
         User::create([
             'name' => 'Administrator',
+            'nomor_hp' => '0810000000',
             'nip' => '0000',
+            'email' => 'admin@gmail.com',
             'role' => 'administrator',
-            'password' => bcrypt('admin1234')
+            'password' => bcrypt('admin1234'),
+            'divisi_id' => null,
+            'foto_profile' => ''
         ]);
     }
 }

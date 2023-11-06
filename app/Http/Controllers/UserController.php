@@ -22,16 +22,23 @@ class UserController extends Controller
         if ($request->isMethod('POST')) {
             $rules = [
                 'name' => 'required|string',
+                'nomor_hp' => 'required|string',
                 'nip' => 'required|unique:users',
                 'role' => 'required',
+                'divisi_id' => 'required',
+                'email' => 'required|string|unique:users,email',
                 'password' => 'required|min:8|confirmed',
             ];
 
             $messages = [
                 'name.required' => 'Kolom nama wajib diisi.',
+                'nomor_hp.required' => 'Kolom nomor telepon wajib diisi.',
                 'nip.required' => 'Kolom NIP wajib diisi.',
                 'role.required' => 'Kolom role wajib diisi.',
+                'divisi_id.required' => 'Kolom divisi wajib diisi.',
                 'nip.unique' => 'NIP ini telah digunakan sebelumnya.',
+                'email.required' => 'Kolom email wajib diisi.',
+                'email.unique' => 'email ini telah digunakan sebelumnya.',
                 'password.required' => 'Kolom kata sandi wajib diisi.',
                 'password.min' => 'Kata sandi harus terdiri dari setidaknya 8 karakter.',
             ];
@@ -40,8 +47,11 @@ class UserController extends Controller
     
             $addUser = User::create([
                 'name' => $request->input('name'),
+                'nomor_hp' => $request->input('nomor_hp'),
                 'nip' => $request->input('nip'),
+                'email' => $request->input('email'),
                 'role' => $request->input('role'),
+                'divisi' => $request->input('divisi'),
                 'password' => bcrypt($request->input('password')),
             ]);
 
@@ -64,28 +74,38 @@ class UserController extends Controller
         if ($request->isMethod('post')) {
             $rules = [
                 'name' => 'required|string',
+                'nomor_hp' => 'required|string',
                 'nip' => 'required|unique:users,nip,'.$id,
+                'email' => 'required|string|unique:users,email'.$request->input('email'),
                 'role' => 'required',
+                'divisi_id' => 'required',
             ];
     
             $messages = [
                 'name.required' => 'Kolom nama wajib diisi.',
+                'nomor_hp.required' => 'Kolom nomor telepon wajib diisi.',
                 'nip.required' => 'Kolom NIP wajib diisi.',
-                'role.required' => 'Kolom role wajib diisi.',
                 'nip.unique' => 'NIP ini telah digunakan sebelumnya.',
+                'email.required' => 'Kolom email wajib diisi.',
+                'email.unique' => 'email ini telah digunakan sebelumnya.',
+                'role.required' => 'Kolom role wajib diisi.',
+                'divisi_id.required' => 'Kolom divisi wajib diisi.',
             ];
     
             $this->validate($request, $rules, $messages);
     
             $user = User::find($id);
             $user->name = $request->input('name');
+            $user->nomor_hp = $request->input('nomor_hp');
             $user->nip = $request->input('nip');
+            $user->email = $request->input('email');
             $user->role = $request->input('role');
+            $user->divisi_id = $request->input('divisi_id');
     
             if ($user->save()) {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
 
-                return redirect()->route('user.update', $id)
+                return redirect()->route('user.index', $id)
                     ->with('success', 'User information updated successfully');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');

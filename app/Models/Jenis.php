@@ -9,6 +9,7 @@ class Jenis extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
     protected $table = 'jenis';
 
     protected $fillable = [

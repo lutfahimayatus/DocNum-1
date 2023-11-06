@@ -15,6 +15,107 @@ a {
     text-decoration: none;
 }
 
+.timeline-wrapper {
+    margin-top: 75px;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.timeline {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 10px;
+    position: relative;
+}
+
+.stage-pending {
+    background-color: rgb(189, 189, 189); /* Change to the color you want for pending stages */
+}
+
+.stage-done {
+    background-color: rgb(37, 187, 37); /* Change to the color you want for completed stages */
+}
+
+.stage {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background-color: #B42021;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+}
+
+.circle::before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: #B42021;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.description {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.line {
+    position: absolute;
+    height: 5px;
+    background-color: gray;
+    z-index: 0;
+}
+.line:not(:first-child) {
+    left: 10%;
+    width: 90%;
+}
+
+.line:first-child {
+    left: 0;
+    width: 10%;
+}
+
+.line:last-child {
+    left: 0;
+    width: 10%;
+}
+
+.belum-upload {
+    color: red; /* You can choose your desired text color */
+    font-weight: bold; /* You can adjust the text style */
+}
+
+.sudah-upload {
+    color: green; /* You can choose your desired text color */
+    font-weight: bold; /* You can adjust the text style */
+}
+
+.verifikasi-berkas {
+    color: blue; /* You can choose your desired text color */
+    font-weight: bold; /* You can adjust the text style */
+}
+
+.disposisi {
+    color: orange; /* You can choose your desired text color */
+    font-weight: bold; /* You can adjust the text style */
+}
+
+.selesai {
+    color: black; /* You can choose your desired text color */
+    font-weight: normal; /* You can adjust the text style */
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -209,10 +310,44 @@ a {
     color: black;
 }
 
+.item-option {
+    margin-right: 10px;
+    padding: 5px;
+}
+
 .sidebar .nav-links li .sub-menu.showMenu {
     max-height: 1000px; /* Adjust the maximum height based on your content */
     opacity: 1;
     transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.menu {
+    display: none;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.menu a {
+    background-color: #B42021;
+    border-radius: 10px;
+    padding: 5px;
+    color: #FFF;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .sidebar .nav-links li .sub-menu a {
@@ -322,10 +457,6 @@ a {
     border-radius: 5px;
 }
 
-.alert-container {
-
-}
-
 .alert.alert-primary {
     background-color: #337ab7;
     color: white;
@@ -415,6 +546,77 @@ a {
     margin-top: 5px;
 }
 
+.profile-wrapper {
+    display: flex;
+    margin: 0px 0px 20px 0px;
+}
+
+.picture-wrapper {
+    width: 100%;
+}
+
+.detail-wrapper {
+    width: 100%;
+}
+
+.profile-wrapper .picture-wrapper .profile-case {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-wrapper .picture-wrapper .profile-case .foto-profile {
+    width: 350px;
+    height: 350px; /* Set a square shape for rounded corners */
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 50%; /* Make the image rounded (circle) */
+}
+.document-wrapper {
+    width: 100%;
+    margin: 50px;
+}
+
+.card-document {
+    border-radius: 10px;
+    padding: 25px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(78, 78, 78, 0.6);
+    margin-bottom: 25px;
+}
+
+.document-wrapper .card-document .topbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.document-wrapper .card-document .content-document {
+    display: flex;
+    justify-content: space-between;
+}
+
+.document-wrapper .card-document .content-footer a{
+    background-color: #B42021;
+    margin: 0px -25px -25px -25px;
+    border-radius: 0px 0px 10px 10px;
+    padding: 0px 25px 0px 25px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.document-wrapper .card-document .content-footer a i{
+    display: flex;
+    align-items: center;
+}
+
+.document-wrapper .card-document .content-footer p{
+    font-size: 20px;
+}
 
 .content .main .form-wrapper .input-wrapper .input {
     width: 100%;
