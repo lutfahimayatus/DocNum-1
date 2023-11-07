@@ -629,6 +629,15 @@ a {
     box-sizing: border-box; /* Include padding and border in the element's total width */
 }
 
+.input {
+    width: 100%;
+    border: 2px;
+    padding: 15px; /* Adjust the padding as needed */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+
 .content .main .form-wrapper .input-wrapper .input-label {
     font-weight: bold;
 }
@@ -643,9 +652,28 @@ a {
     border: none; /* Remove the default button border */
 }
 
+button {
+    width: 100px;
+    height: 45px;
+    margin-top: 10px;
+    border-radius: 10px;
+    color: white;
+    background-color: #B42021;
+    border: none; /* Remove the default button border */
+}
+
 .content .main .form-wrapper .button-wrapper {
     justify-content: space-between;
     display: flex;
+}
+
+.form-group {
+    justify-content: space-between;
+    display: flex;
+}
+
+.form-group .input-group {
+    margin: 10px 10px 20px 0px;
 }
 
 .content .main .form-wrapper .input-wrapper {

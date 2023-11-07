@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::match(['get', 'post'],'document/upload/employee/{id}', 'uploadDocument')->name('employee.upload');
                 Route::match(['get', 'post'], 'document/generate', 'generateDocument')->name('employee.generate');
                 Route::match(['get', 'post'], 'document/update/employee/{id}', 'updateDocument')->name('employee.document.update');
+                Route::get('document/search', 'searchByJenis')->name('search.documents');
             });
         });
         Route::middleware(['role:administrator'])->group(function () {

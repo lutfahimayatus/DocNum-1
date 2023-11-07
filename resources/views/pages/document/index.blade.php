@@ -4,7 +4,23 @@
 
 <div class="content">
     <div class="main">
-        <div class="document-wrapper">
+        <div class="document-wrapper">   
+            <form action="{{ route('search.documents') }}" method="GET">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="input" name="search" placeholder="Search by NIP or Document Name">
+                    </div>
+                    <div class="input-group">
+                        <select class="input" name="jenis">
+                            <option value="" selected>Select Jenis</option>
+                            @foreach ($jenis as $jenisOption)
+                                <option value="{{ $jenisOption->id }}">{{ $jenisOption->jenis }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit">Search</button>
+                </div>
+            </form>                 
         @if ($data)
             @foreach ($data as $dokumen)
             <div class="card-document">

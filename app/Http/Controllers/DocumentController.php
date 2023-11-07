@@ -16,7 +16,31 @@ class DocumentController extends Controller
     {
         $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->id)->paginate(5);
         $title = 'Data Dokumen';
-        return view('pages.document.index', compact('title', 'data'));
+        $jenis = Jenis::all();
+        return view('pages.document.index', compact('title', 'data', 'jenis'));
+    }
+
+    public function searchByJenis(Request $request)
+    {
+        $jenis = Jenis::all();
+        $data = Document::paginate(5);
+    
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $jenisId = $request->input('jenis');
+            
+            $data = Document::where(function ($query) use ($search, $jenisId) {
+                $query->where('users', 'like', '%' . $search . '%')
+                      ->orWhere('document', 'like', '%' . $search . '%');
+                
+                if (!empty($jenisId)) {
+                    $query->where('jenis_id', $jenisId);
+                }
+            })->paginate(10);
+        }
+        
+        $title = 'Data Dokumen';
+        return view('pages.document.index', compact('title', 'data', 'jenis'));
     }
 
     public function generateDocument(Request $request)
@@ -62,7 +86,8 @@ class DocumentController extends Controller
         $jenis = Jenis::all();
         $kategori = Categories::all();
         $title = 'Generate No. Dokumen';
-        if (Auth::user()->divisi === '') {
+        $user = User::find(Auth::user()->id);
+        if ($user->divisi !== '') {
             return view('pages.document.generate', compact('title', 'jenis', 'kategori'));
         } else {
             return back()->with('error', 'Lengkapi Profile Anda!');
