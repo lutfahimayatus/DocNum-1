@@ -6,7 +6,7 @@
     <div class="main">
         <div class="table-responsive">
             <a href="{{ route('cat.create') }}" class="table-button">Tambah Kategori</a>
-            <table class="styled-table">
+            <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -27,7 +27,6 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $data->links('custom.pagination') }}
         </div>        
     </div>
 </div>

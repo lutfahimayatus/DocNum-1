@@ -6,7 +6,7 @@
     <div class="main">
         <div class="table-responsive">
             <a href="{{ route('jenis.create') }}" class="table-button">Add Jenis</a>
-            <table class="styled-table">
+            <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -31,7 +31,6 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $data->links('custom.pagination') }}
         </div>        
     </div>
 </div>

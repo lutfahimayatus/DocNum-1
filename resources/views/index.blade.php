@@ -8,7 +8,7 @@
                 <h1>Selamat Datang di DocNum</h1>
                 <h3>Solusi Pintar untuk Manajemen Dokumen Anda!</h3>
                 <br>
-                <a class="button" href="#">Buat Dokumen Sekarang</a>
+                <a class="button" href="{{ Auth::user()->role === 'administrator' ? route('document.index') : route('employee.generate')}}">Buat Dokumen Sekarang</a>
             </div>
             <div class="img-main">
                 <img src="{{ asset('assets/img/logo-beranda.png')}}" alt="">

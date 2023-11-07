@@ -14,7 +14,7 @@ class DocumentController extends Controller
 {
     public function index()
     {
-        $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::where('users', Auth::user()->id)->paginate(5);
+        $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->id)->paginate(5);
         $title = 'Data Dokumen';
         return view('pages.document.index', compact('title', 'data'));
     }
@@ -62,7 +62,11 @@ class DocumentController extends Controller
         $jenis = Jenis::all();
         $kategori = Categories::all();
         $title = 'Generate No. Dokumen';
-        return view('pages.document.generate', compact('title', 'jenis', 'kategori'));
+        if (Auth::user()->divisi === '') {
+            return view('pages.document.generate', compact('title', 'jenis', 'kategori'));
+        } else {
+            return back()->with('error', 'Lengkapi Profile Anda!');
+        }
     }
 
     private function generateDocumentNumber($jenisDokumen)
@@ -88,5 +92,126 @@ class DocumentController extends Controller
         $data = Document::with('jenis.category')->where('id', $id)->get();
         $title = 'Detail Dokumen';
         return view('pages.document.detail', compact('title','data'));
+    }
+
+    public function updateDocument(Request $request, $id)
+    {
+        if ($request->isMethod('POST')) {
+            $rules = [
+                'document' => 'required|string',
+                'file_document' => 'mimes:pdf|max:2048',
+            ];
+
+            $messages = [
+                'document.required' => 'Kolom judul wajib diisi.',
+            ];
+
+            $this->validate($request, $rules, $messages);
+
+            $data = Document::find($id);
+            $data->document = $request->input('document');
+            $data->status = $request->input('status');
+
+            if ($request->hasFile('file_document')) {
+                $oldFileName = $data->file;
+    
+                $file = $request->file('file_document');
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('files'), $fileName);
+                $data->file = $fileName;
+                $data->status = 'sudah_upload';
+    
+                if ($oldFileName) {
+                    $oldFilePath = public_path('files') . '/' . $oldFileName;
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+            }
+
+            if ($data->isDirty()) {
+                if ($data->save()) {
+                    UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                    return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $id)
+                        ->with('success', 'Document information updated successfully');
+                } else {
+                    UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                    return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $id)
+                        ->with('error', 'Document information update failed');
+                }
+            } else {
+                return redirect()->route('document.index')
+                    ->with('error', 'No changes were made to the document information.');
+            }
+        }
+
+        $title = 'Update Dokumen';
+        $data = Document::find($id);
+        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'DataDocument', '');
+        return view('pages.document.update', compact('title', 'data'));
+    }
+
+    public function downloadDocument($id)
+    {
+        $data = Document::find($id);
+
+        if ($data) {
+            $filePath = public_path('files') . '/' . $data->file;
+    
+            if (file_exists($filePath)) {
+                return response()->download($filePath, $data->file);
+            } else {
+                return redirect()->back()->with('error', 'File not found.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Document not found.');
+        }
+    }
+
+    public function uploadDocument(Request $request, $id)
+    {
+        if ($request->isMethod('POST')) {
+            $rules = [
+                'file_document' => 'required|mimes:pdf|max:2048',
+            ];
+
+            $this->validate($request, $rules);
+
+            $data = Document::find($id);
+
+            if ($request->hasFile('file_document')) {
+                $oldFileName = $data->file;
+    
+                $file = $request->file('file_document');
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('files'), $fileName);
+                $data->file = $fileName;
+                $data->status = 'sudah_upload';
+                
+                if ($oldFileName) {
+                    $oldFilePath = public_path('files') . '/' . $oldFileName;
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+            }
+
+            if ($data->save()) {
+                UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+
+                return redirect()->route('employee.document', $id)
+                    ->with('success', 'Document information updated successfully');
+            } else {
+                UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+
+                return redirect()->route('employee.document', $id)
+                    ->with('error', 'Document information update failed');
+            }
+        }
+
+        $title = 'Upload File Dokumen';
+        $data = Document::find($id);
+        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'DataDocument', '');
+        return view('pages.document.upload', compact('title', 'data'));
     }
 }

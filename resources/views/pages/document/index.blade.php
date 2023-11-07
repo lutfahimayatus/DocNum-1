@@ -15,18 +15,30 @@
                     </a>
                 </div>
                 <div id="menu-{{ $dokumen->id }}" class="menu" style="display: none;">
-                    <a class="item-option" href="#">
+                    @if (Auth::user()->role === 'administrator')
+                    <a class="item-option" href="{{ route('document.download.single', $dokumen->id)}}">
                         <i class="bx bx-download"></i>
                         Download 
                     </a>
-                    <a class="item-option" href="#">
-                        <i class="bx bx-upload"></i>
-                        Upload 
-                    </a>
-                    <a class="item-option" href="#">
+                    <a class="item-option" href="{{ route('document.update', $dokumen->id)}}">
                         <i class="bx bx-edit-alt"></i>
                         Edit
                     </a>
+                    @endif
+                    @if (Auth::user()->role === 'employee')
+                    <a class="item-option" href="{{ route('employee.download', $dokumen->id)}}">
+                        <i class="bx bx-download"></i>
+                        Download 
+                    </a>
+                    <a class="item-option" href="{{ route('employee.upload', $dokumen->id)}}">
+                        <i class="bx bx-upload"></i>
+                        Upload 
+                    </a>
+                    <a class="item-option" href="{{ route('employee.document.update', $dokumen->id)}}">
+                        <i class="bx bx-edit-alt"></i>
+                        Edit
+                    </a>
+                    @endif
                 </div>
                 <hr>
                 <div class="content-document">

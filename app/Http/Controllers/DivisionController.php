@@ -11,7 +11,7 @@ class DivisionController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Division::paginate(10);
+        $data = Division::all();
         $title = 'Data Divisi';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'DataDisivi', '');
         return view('pages.division.index', compact('data','title'));

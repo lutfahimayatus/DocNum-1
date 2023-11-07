@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Categories::paginate(10);
+        $data = Categories::all();
         $title = 'Data Kategori';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'DataKategori', '');
         return view('pages.category.index', compact('data', 'title'));

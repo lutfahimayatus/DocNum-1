@@ -6,7 +6,7 @@
     <div class="main">
         <div class="table-responsive">
             <a href="{{ route('user.create') }}" class="table-button">Add User</a>
-            <table class="styled-table">
+            <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -29,7 +29,6 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $users->links('custom.pagination') }}
         </div>        
     </div>
 </div>

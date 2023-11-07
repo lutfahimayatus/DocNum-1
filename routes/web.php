@@ -44,8 +44,11 @@ Route::middleware(['auth'])->group(function () {
         Route::middleware(['role:employee'])->group(function () {
             Route::controller(DocumentController::class)->group(function () {
                 Route::get('document/history', 'index')->name('employee.document');
-                Route::match(['get', 'post'], 'document/generate', 'generateDocument')->name('employee.generate');
                 Route::get('document/detail/employee/{id}', 'detailDocument')->name('employee.detail');
+                Route::get('document/download/employee/{id}', 'downloadDocument')->name('employee.download');
+                Route::match(['get', 'post'],'document/upload/employee/{id}', 'uploadDocument')->name('employee.upload');
+                Route::match(['get', 'post'], 'document/generate', 'generateDocument')->name('employee.generate');
+                Route::match(['get', 'post'], 'document/update/employee/{id}', 'updateDocument')->name('employee.document.update');
             });
         });
         Route::middleware(['role:administrator'])->group(function () {
@@ -87,8 +90,8 @@ Route::middleware(['auth'])->group(function () {
             Route::controller(DocumentController::class)->group(function () {
                 Route::get('/document', 'index')->name('document.index');
                 Route::get('document/detail/{id}', 'detailDocument')->name('document.detail');
-                Route::match(['get', 'post'], '/document/{id}/update', 'update')->name('document.update');
-                Route::get('/document/download/single/{id}', 'downloadSingle')->name('document.download.single');
+                Route::match(['get', 'post'], '/document/{id}/update', 'updateDocument')->name('document.update');
+                Route::get('/document/download/single/{id}', 'downloadDocument')->name('document.download.single');
                 Route::get('/document/download/all', 'downloadAll')->name('docuemnt.download.all');
             });
         });

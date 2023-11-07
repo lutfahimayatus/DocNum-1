@@ -5,7 +5,7 @@
 <div class="content">
     <div class="main">
         <div class="table-responsive">
-            <table class="styled-table">
+            <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -31,7 +31,6 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $usersLog->links('custom.pagination') }}
         </div>        
     </div>
 </div>

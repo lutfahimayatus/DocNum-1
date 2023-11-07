@@ -13,7 +13,7 @@ class JenisController extends Controller
     public function index(Request $request)
     {
         $title = 'Data Jenis';
-        $data = Jenis::with('category')->paginate(10);
+        $data = Jenis::with('category')->get();
         UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'DataJenis', '');
         return view('pages.jenis.index', compact('title', 'data'));
     }

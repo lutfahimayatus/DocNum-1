@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::paginate(10);
+        $users = User::all();
         $title = 'Data Users';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'DataUser', '');
         return view('pages.users.index', compact('users', 'title'));
