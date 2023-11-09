@@ -5,10 +5,10 @@
 <div class="content">
     <div class="main">
         <div class="document-wrapper">   
-            <form action="{{ route('search.documents') }}" method="GET">
+            <form action="{{ Auth::user()->role === 'administrator' ? route('searchs.documents') : route('search.documents') }}" method="GET">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="input" name="search" placeholder="Search by NIP or Document Name">
+                        <input class="input" type="text" name="search" placeholder="Cari Dokumen/NIP">
                     </div>
                     <div class="input-group">
                         <select class="input" name="jenis">
@@ -20,8 +20,8 @@
                     </div>
                     <button type="submit">Search</button>
                 </div>
-            </form>                 
-        @if ($data)
+            </form>
+            @if ($data)
             @foreach ($data as $dokumen)
             <div class="card-document">
                 <div class="topbar">
@@ -88,9 +88,9 @@
             </div>
             @endforeach
             {{ $data->links('custom.pagination') }}
-        @else
-        <h1 class="title">Tidak ada data.</h1>
-        @endif 
+            @else
+            <h1 class="title">Tidak ada data.</h1>
+            @endif 
         </div>
     </div>
 </div>

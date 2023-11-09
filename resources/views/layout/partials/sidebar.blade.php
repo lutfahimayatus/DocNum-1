@@ -45,7 +45,7 @@
                 <a href="{{ route('document.index')}}">
                     <i class='bx bx-history'></i>
                     <div class="item-container"> 
-                        <span class="link_name">Riwayat</span>
+                        <span class="link_name">Riwayat Dokumen</span>
                     </div>
                 </a>
             </li>
@@ -72,7 +72,7 @@
                             <a href="{{ route('employee.generate')}}">Generate No. Dokumen</a>
                         </li>
                         <li @if (Route::currentRouteName() == 'employee.document' || Route::currentRouteName() == 'employee.detail' || Route::currentRouteName() == 'employee.document.update') class="active" @endif>
-                            <a href="{{ route('employee.document')}}">Riwayat</a>
+                            <a href="{{ route('employee.document')}}">Riwayat Dokumen</a>
                         </li>
                     </ul>
                 </div>

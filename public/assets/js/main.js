@@ -73,3 +73,17 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+function copyToClipboard(inputId) {
+    var inputField = document.getElementById(inputId);
+    inputField.select();
+    document.execCommand("copy");
+    inputField.setSelectionRange(0, 0);
+
+    var copySuccessMessage = document.getElementById("copy-success-message");
+    copySuccessMessage.style.display = "block";
+
+    setTimeout(function() {
+        copySuccessMessage.style.display = "none";
+    }, 2000);
+}

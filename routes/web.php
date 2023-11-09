@@ -90,7 +90,8 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::controller(DocumentController::class)->group(function () {
                 Route::get('/document', 'index')->name('document.index');
-                Route::get('document/detail/{id}', 'detailDocument')->name('document.detail');
+                Route::get('/documents/searchs', 'searchByJenis')->name('searchs.documents');
+                Route::get('/document/detail/{id}', 'detailDocument')->name('document.detail');
                 Route::match(['get', 'post'], '/document/{id}/update', 'updateDocument')->name('document.update');
                 Route::get('/document/download/single/{id}', 'downloadDocument')->name('document.download.single');
                 Route::get('/document/download/all', 'downloadAll')->name('docuemnt.download.all');

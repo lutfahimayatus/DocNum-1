@@ -5,6 +5,7 @@
 <div class="content">
     <div class="main">
         <div class="form-wrapper">
+
             <div class="input-wrapper">
                 <label class="input-label" for="inputField">Judul Dokumen</label>
                 <input disabled type="text" class="input" value="{{ $data[0]->document }}">
@@ -12,7 +13,13 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField">Nomor Dokumen</label>
-                <input disabled type="text" class="input" value="{{ $data[0]->document_number }}">
+                <div class="input-group">
+                    <input class="input" type="text" id="document_number" value="{{ $data[0]->document_number }}" readonly>
+                    <i class="fa-regular fa-copy" onclick="copyToClipboard('document_number')"></i>
+                </div>    
+                <div id="copy-success-message" class="alert alert-success" style="display: none; margin-top: 5px;">
+                    Nomor Dokumen Berhasil Disalin
+                </div>            
             </div>
 
             <div class="input-wrapper">
@@ -48,7 +55,13 @@
                         <div class="description">Selesai</div>
                     </div>
                 </div>
-            </div>                    
+            </div>    
+            <br>
+            <br>
+            <a href="{{Auth::user()->role === 'administrator' ? route('document.index') : route('employee.document') }}">
+                <span class="text">Kembali</span>
+            </a>  
+
         </div>
     </div>
 </div>

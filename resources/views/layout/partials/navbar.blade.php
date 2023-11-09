@@ -1,20 +1,23 @@
 <div class="hero">
     <div class="navbar">
         <div class="navbar-container">
-            <div class="search">
-                <input type="text" placeholder="Search">
+            <div class="title">
+                <h2>{{ $title }}</h2>
             </div>
             <div class="profile"> 
                 <a href="{{ route('profile', Auth::user()->id)}}"> 
                     <p>{{ Auth::user()->name }}</p>
-                    <img src="{{ asset('assets/img/profile.png') }}" alt="">
+                    <div class="wrapper">
+                        @if (Auth::user()->foto_profile)
+                            <img class="img" src="{{ asset('profile_photos/'.Auth::user()->foto_profile)}}">
+                        @else
+                            <img class="img" src="{{ asset('assets/img/default-profile.png')}}">
+                        @endif
+                    </div>
                 </a>
             </div>
         </div>
         <div class="breadcrumb">
-            <div>
-                <h2>{{ $title }}</h2>
-            </div>
             <div class="alert-container">
                 @if(session('success'))
                     <div class="alert alert-success">

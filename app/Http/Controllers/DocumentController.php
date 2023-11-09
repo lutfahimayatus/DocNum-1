@@ -14,7 +14,7 @@ class DocumentController extends Controller
 {
     public function index()
     {
-        $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->id)->paginate(5);
+        $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
         $title = 'Data Dokumen';
         $jenis = Jenis::all();
         return view('pages.document.index', compact('title', 'data', 'jenis'));
@@ -24,21 +24,34 @@ class DocumentController extends Controller
     {
         $jenis = Jenis::all();
         $data = Document::paginate(5);
-    
+
+        $search = $request->input('search');
+        $jenisId = $request->input('jenis');
+
         if ($request->has('search')) {
-            $search = $request->input('search');
-            $jenisId = $request->input('jenis');
-            
             $data = Document::where(function ($query) use ($search, $jenisId) {
-                $query->where('users', 'like', '%' . $search . '%')
-                      ->orWhere('document', 'like', '%' . $search . '%');
-                
+                if (Auth::user()->role === 'employee') {
+                    $query->where(function ($subquery) use ($search) {
+                        $subquery->where('users', Auth::user()->nip)
+                                 ->where('document', 'like', '%' . $search . '%');
+                    });
+                }
+
+                if (Auth::user()->role === 'administrator') {
+                    $query->where(function ($subquery) use ($search) {
+                        $subquery->where('document', 'like', '%' . $search . '%')
+                                 ->orWhere('users', 'like', '%' . $search . '%');
+                    });
+                }
+
                 if (!empty($jenisId)) {
                     $query->where('jenis_id', $jenisId);
                 }
-            })->paginate(10);
+            })->paginate(5);
         }
-        
+
+        // Remove the dd($data) line as it's typically used for debugging
+
         $title = 'Data Dokumen';
         return view('pages.document.index', compact('title', 'data', 'jenis'));
     }
@@ -66,7 +79,7 @@ class DocumentController extends Controller
             $kode = $this->generateDocumentNumber($jenisDokumen);
 
             $data = Document::create([
-                'users' => Auth::user()->id,
+                'users' => Auth::user()->nip,
                 'document_number' => $kode,
                 'document' => $request->input('document'),
                 'jenis_id' => $jenisDokumen->id,

@@ -6,6 +6,7 @@ use App\Models\Categories;
 use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\Division;
+use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,9 +17,10 @@ class DashboardController extends Controller
         $user = Auth::user();
         $dataUser = User::count();
         $dataCat = Categories::count();
-        $title = 'Beranda';
+        $dataDoc = Document::count();
+        $title = 'Home';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'Dashboard', '');
-        return view('index', compact('dataCat', 'dataUser', 'user', 'title'));
+        return view('index', compact('dataCat', 'dataUser', 'user', 'dataDoc','title'));
     }
 
     public function changePassword(Request $request, $id)

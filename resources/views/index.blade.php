@@ -34,6 +34,18 @@
             <div class="card-content">
                 <div class="card-saperate">
                     <div class="card-info">
+                        <h2 class="judul">Dokumen</h2>
+                        <h2 class="angka">{{ $dataDoc }}</h2>
+                    </div>
+                    <img src="{{ asset('assets/img/Documents.svg')}}" alt="">
+                </div>
+            </div>
+            <a href="{{ route('user.index')}}">Selengkapnya <i class='bx bx-chevron-right' ></i></a>
+        </div>
+        <div class="card-container">
+            <div class="card-content">
+                <div class="card-saperate">
+                    <div class="card-info">
                         <h2 class="judul">Kategori</h2>
                         <h2 class="angka">{{ $dataCat }}</h2>
                     </div>

@@ -10,7 +10,7 @@ class UserLogController extends Controller
 {
     public function index(Request $request)
     {
-        $usersLog = UserLogs::orderBy('created_at', 'desc')->get();
+        $usersLog = UserLogs::all();
         $title = 'Log Activity';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'UserLog', '');
         return view('pages.users_log.index', compact('usersLog', 'title'));
