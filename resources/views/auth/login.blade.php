@@ -5,14 +5,18 @@
     <div class="form">
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <div class="nip">
-                <label for="nip">NIP</label>
-                <input type="number" id="nip" name="nip" value="{{ old('nip') }}" placeholder="Masukkan Nomor Induk Pegawai" required>
+            <div class="input-wrapper">
+                <div class="input-group">
+                    <label for="nip">NIP</label>
+                    <input type="number" id="nip" name="nip" value="{{ old('nip') }}" placeholder="Masukkan Nomor Induk Pegawai" required>
+                </div>
             </div>
-            <div class="password">
+            <div class="input-wrapper">
                 <label for="password">Kata Sandi</label>
-                <input type="password" id="password" name="password" placeholder="Masukkan Kata Sandi" required>
-                <i class="uil uil-eye-slash showHidePw"></i>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Masukkan Kata Sandi" required>
+                    <i class="toggle-password-icon far fa-eye" data-target="password"></i>
+                </div>
             </div>
             <br>
             <button type="submit">Masuk</button>

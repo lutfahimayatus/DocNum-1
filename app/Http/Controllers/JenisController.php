@@ -10,11 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class JenisController extends Controller
 {
+    private function decryptIfEncrypted($encryptedId) 
+    {
+        if (preg_match('/^\d/', $encryptedId)) {
+            return $encryptedId;
+        } else {
+            return decrypt($encryptedId);
+        }
+    }
+
     public function index(Request $request)
     {
         $title = 'Data Jenis';
         $data = Jenis::with('category')->get();
-        UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'DataJenis', '');
+        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataJenis', '');
         return view('pages.jenis.index', compact('title', 'data'));
     }
 
@@ -42,22 +51,24 @@ class JenisController extends Controller
             ]);
 
             if ($data) {
-                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                 return redirect()->route('jenis.index')->with('success', 'Berhasil menambahkan jenis');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
                 return back()->withInput()->with('error', 'Gagal menambah jenis');
             }
         }
 
         $title = 'Add Jenis';
         $categories = Categories::all();
-        UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'TambahJenis', '');
+        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'TambahJenis', '');
         return view('pages.jenis.store', compact('title', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         if ($request->isMethod('post')) {
             $rules = [
                 'jenis' => 'required|string',
@@ -79,12 +90,12 @@ class JenisController extends Controller
             $data->category_id = $request->input('category_id');
     
             if ($data->save()) {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
-                return redirect()->route('jenis.update', $id)
+                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('jenis.index')
                     ->with('success', 'Jenis information updated successfully');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
-                return redirect()->route('jenis.update', $id)
+                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
+                return redirect()->route('jenis.index')
                     ->with('error', 'Jenis information update failed');
             }
         } 
@@ -92,7 +103,7 @@ class JenisController extends Controller
         $data = Jenis::with('category')->where('id', $id)->get();
         $categories = Categories::all();
         $title = 'Update Jenis';
-        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'Jenis ID:'.$id, '');
+        UserLogs::logAction($request, 'Data Access', Auth::user()->id, 'Jenis ID:'.$id, '');
         return view('pages.jenis.update', compact('data', 'title', 'categories'));
     }
 
@@ -102,12 +113,12 @@ class JenisController extends Controller
 
         if ($data) {
             $data->delete();
-            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
             return redirect()->route('jenis.index')
                 ->with('success', 'Jenis deleted successfully');
         } else {
-            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
             return redirect()->route('jenis.index')
                 ->with('error', 'Jenis not found');

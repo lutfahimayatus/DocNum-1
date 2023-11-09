@@ -20,7 +20,7 @@
                             <td>{{ $index + 1}}</td>
                             <td>{{ $cat->desc }}</td>
                             <td>
-                                <a href="{{ route('cat.update', $cat->id) }}" class="table-button-primary">Edit</a>
+                                <a href="{{ route('cat.update', encrypt($cat->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('cat.delete', $cat->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>

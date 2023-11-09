@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    private function decryptIfEncrypted($encryptedId) 
+    {
+        if (preg_match('/^\d/', $encryptedId)) {
+            return $encryptedId;
+        } else {
+            return decrypt($encryptedId);
+        }
+    }
+
+
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -19,12 +29,14 @@ class DashboardController extends Controller
         $dataCat = Categories::count();
         $dataDoc = Document::count();
         $title = 'Home';
-        UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'Dashboard', '');
+        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'Dashboard', '');
         return view('index', compact('dataCat', 'dataUser', 'user', 'dataDoc','title'));
     }
 
-    public function changePassword(Request $request, $id)
+    public function changePassword(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+        
         if ($request->isMethod('post')) {
             $rules = [
                 'old_password' => 'required|string',
@@ -43,16 +55,16 @@ class DashboardController extends Controller
             if (password_verify($request->input('old_password'), $data->password)) {
                 $data->password = bcrypt($request->input('new_password'));
                 if ($data->save()) {
-                    UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                    UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                     return redirect()->route('profile.change.password', $id)
                         ->with('success', 'User password updated successfully');
                 } else {
-                    UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                    UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
                     return redirect()->route('profile.change.password', $id)
                         ->with('error', 'User password update failed');
                 }
             } else {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                 return redirect()->route('profile.change.password', $id)
                     ->with('error', 'Old password is incorrect');
             }
@@ -60,12 +72,14 @@ class DashboardController extends Controller
 
         $data = User::find($id);
         $title = 'Ganti Kata Sandi';
-        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'PasswordUser', '');
+        UserLogs::logAction($request, 'Data Access', Auth::user()->id, 'PasswordUser', '');
         return view('change_password', compact(['data', 'title']));
     }
 
-    public function profile(Request $request, $id)
+    public function profile(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         if ($request->isMethod('post')) {
             $rules = [
                 'name' => 'required|string',
@@ -75,7 +89,7 @@ class DashboardController extends Controller
                 'email' => 'required|string',
                 'profile_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ];
-    
+
             $messages = [
                 'name.required' => 'Kolom nama wajib diisi.',
                 'divisi_id.required' => 'Kolom divisi wajib diisi.',
@@ -88,6 +102,7 @@ class DashboardController extends Controller
             $this->validate($request, $rules, $messages);
 
             $user = User::find($id);
+            
             $user->name = $request->input('name');
             $user->nomor_hp = $request->input('nomor_hp');
             $user->nip = $request->input('nip');
@@ -101,15 +116,17 @@ class DashboardController extends Controller
                 $user->foto_profile = $fileName;
             }
 
+            $encrypted_id = encrypt($id);
             if ($user->save()) {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE USER DATA', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE USER DATA', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
-                return redirect()->route('profile', $id)
+                
+                return redirect()->route('profile', $encrypted_id)
                     ->with('success', 'User information updated successfully');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE USER DATA', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE USER DATA', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
-                return redirect()->route('profile', $id)
+                return redirect()->route('profile', $encrypted_id)
                     ->with('error', 'User information update failed');
             }
         }
@@ -117,7 +134,7 @@ class DashboardController extends Controller
         $user = User::with('divisi')->where('id',$id)->get();
         $divisi = Division::all();
         $title = 'Profile';
-        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'ProfileUser', '');
+        UserLogs::logAction($request, 'Data Access', Auth::user()->id, 'ProfileUser', '');
         return view('profile', compact(['user', 'title', 'divisi']));
     }
 }

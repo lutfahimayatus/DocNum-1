@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('kode');
             $table->string('divisi');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('request');
             $table->string('response');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

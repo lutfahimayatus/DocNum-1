@@ -5,7 +5,7 @@
                 <h2>{{ $title }}</h2>
             </div>
             <div class="profile"> 
-                <a href="{{ route('profile', Auth::user()->id)}}"> 
+                <a href="{{ route('profile', encrypt(Auth::user()->id) )}}"> 
                     <p>{{ Auth::user()->name }}</p>
                     <div class="wrapper">
                         @if (Auth::user()->foto_profile)

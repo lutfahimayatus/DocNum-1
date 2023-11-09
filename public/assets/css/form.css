@@ -3,7 +3,7 @@
 *{
     font-family: 'Nunito Sans', sans-serif;
     font-weight: 550;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .alert-container {
@@ -15,28 +15,29 @@
 }
 
 .alert {
-    position: relative;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    width: 567px;
-    height: 20px;
-    padding: 15px;
+    display: flex;
+    width: 600px;
+    height: 40px;
+    border-radius: 10px;
+    justify-content: space-between;
 }
 
 .close {
-    position: absolute;
-    top: 5px;
-    right: 10px;
     cursor: pointer;
-    background: transparent; 
+    background: transparent;
     border: none;
+    margin-right: 15px;
 }
 
 .alert-success {
     background-color: #d4edda;
     border-color: #c3e6cb;
     color: #155724;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 
 .alert-primary {
@@ -72,9 +73,13 @@
     align-items: flex-start;
 }
 
+.container .alert-container p {
+    margin: 10px;
+}
+
 .logo {
     display: flex;
-    margin: 25px;
+    margin: 15px;
     justify-content: center;
     align-items: center; 
 }
@@ -126,100 +131,39 @@ form {
     align-items: stretch;
 }
 
-.form .password {
-    margin-top: 20px;
+.form .input-group select,
+.form .input-group input {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box; 
+}
+
+.form .input-wrapper {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.form form button {
+    width: 600px;
+    height: 47px;
+    background: #B42021;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+}
+
+.input-group {
     position: relative;
 }
 
-.form .password i.showHidePw {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-.form .password i.showHidePw {
-    right: 10px;
-    bottom: 10px;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.form .password i {
+.toggle-password-icon {
     position: absolute;
     top: 50%;
+    right: 10px;
     transform: translateY(-50%);
-    color: #999;
-    font-size: 25px;
-    transition: all 0.2s ease;
-}
-
-.form .nip input, 
-.form .password input {
-    width: 567px;
-    height: 21px;
-    border: none;
-    padding: 15px;
-}
-
-.form .role select {
-    width: 597px;
-    height: 51px;
-    border: none;
-    padding: 15px;
-}
-
-.form .nip input:focus,
-.form .password input:focus,
-.form .role select:focus {
-    outline: none;
-}
-
-
-.form form button {
-    width: 598px;
-    height: 47px;
-    background: #B42021;
-    color: #fff;
-    border: none;
-}
-
-.button-input {
-    width: 598px;
-    height: 47px;
-    background: #B42021;
-    color: #fff;
-    border: none;
-}
-
-.form .nip input,
-.form .password input, button, select {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.form .role label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-
-
-.form .nip, .form .password {
-    display: flex;
-    flex-direction: column;
-}
-
-.form .nip {
-    margin-bottom: 20px;
-}
-
-.form .role {
-    margin-bottom: 20px;
-}
-
-.form .password {
-    margin-top: 20px;
+    cursor: pointer;
 }
 
 .akun {

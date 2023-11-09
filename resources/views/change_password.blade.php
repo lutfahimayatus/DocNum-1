@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" action="{{ route('profile.change.password', $data->id) }}" method="POST">
+        <form class="form-wrapper" action="{{ route('profile.change.password', encrypt($data->id)) }}" method="POST">
             @csrf
             @method('POST')
             

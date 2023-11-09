@@ -25,7 +25,7 @@
                             <td>{{ $ul->created_at }}</td>
                             <td>{{ $ul->request}}</td>
                             <td>{{ $ul->response }}</td>
-                            <td>{{ $ul->users }}</td>
+                            <td>{{ $ul->user->nip }} - {{ $ul->user->name }}</td>
                             <td>{{ $ul->ip }}</td>
                         </tr>
                     @endforeach

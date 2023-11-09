@@ -49,13 +49,14 @@ Route::middleware(['auth'])->group(function () {
                 Route::match(['get', 'post'],'document/upload/employee/{id}', 'uploadDocument')->name('employee.upload');
                 Route::match(['get', 'post'], 'document/generate', 'generateDocument')->name('employee.generate');
                 Route::match(['get', 'post'], 'document/update/employee/{id}', 'updateDocument')->name('employee.document.update');
-                Route::get('document/search', 'searchByJenis')->name('search.documents');
+                Route::get('document/search', 'search')->name('search.documents');
             });
         });
         Route::middleware(['role:administrator'])->group(function () {
             Route::controller(UserController::class)->group(function () {
                 Route::get('/user', 'index')->name('user.index');
                 Route::get('/user/{id}/delete', 'delete')->name('user.delete');
+                Route::get('/user/{id}/restore', 'restore')->name('user.restore');
                 Route::match(['get', 'post'], '/user/create', 'store')->name('user.create');
                 Route::match(['get', 'post'], '/user/{id}/update', 'update')->name('user.update');
             });
@@ -90,11 +91,11 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::controller(DocumentController::class)->group(function () {
                 Route::get('/document', 'index')->name('document.index');
-                Route::get('/documents/searchs', 'searchByJenis')->name('searchs.documents');
+                Route::get('/documents/searchs', 'search')->name('searchs.documents');
                 Route::get('/document/detail/{id}', 'detailDocument')->name('document.detail');
                 Route::match(['get', 'post'], '/document/{id}/update', 'updateDocument')->name('document.update');
                 Route::get('/document/download/single/{id}', 'downloadDocument')->name('document.download.single');
-                Route::get('/document/download/all', 'downloadAll')->name('docuemnt.download.all');
+                Route::get('/document/download/all', 'downloadAllDocuments')->name('document.download.all');
             });
         });
     });

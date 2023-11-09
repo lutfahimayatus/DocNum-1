@@ -1,15 +1,32 @@
-const pwShowHide = document.querySelectorAll(".showHidePw");
+const togglePasswordIcons = document.querySelectorAll('.toggle-password-icon');
 
-pwShowHide.forEach(eyeIcon => {
-    eyeIcon.addEventListener("click", () => {
-        const pwField = eyeIcon.previousElementSibling;
+togglePasswordIcons.forEach(icon => {
+    icon.addEventListener('click', function () {
+        const targetId = icon.getAttribute('data-target');
+        const passwordInput = document.getElementById(targetId);
 
-        if (pwField.type === "password") {
-            pwField.type = "text";
-            eyeIcon.classList.replace("uil-eye-slash", "uil-eye");
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
         } else {
-            pwField.type = "password";
-            eyeIcon.classList.replace("uil-eye", "uil-eye-slash");
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
         }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var closeButtons = document.querySelectorAll('.alert .close');
+    
+    closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var alert = this.parentElement;
+            alert.classList.add('fade-out');
+            setTimeout(function () {
+                alert.style.display = 'none';
+            }, 500); // Adjust the time in milliseconds (e.g., 500 = 0.5 seconds)
+        });
     });
 });

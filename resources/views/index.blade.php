@@ -37,7 +37,7 @@
                         <h2 class="judul">Dokumen</h2>
                         <h2 class="angka">{{ $dataDoc }}</h2>
                     </div>
-                    <img src="{{ asset('assets/img/Documents.svg')}}" alt="">
+                    <img src="{{ asset('assets/img/Document.svg')}}" alt="">
                 </div>
             </div>
             <a href="{{ route('user.index')}}">Selengkapnya <i class='bx bx-chevron-right' ></i></a>
@@ -49,7 +49,7 @@
                         <h2 class="judul">Kategori</h2>
                         <h2 class="angka">{{ $dataCat }}</h2>
                     </div>
-                    <img src="{{ asset('assets/img/users.svg')}}" alt="">
+                    <img src="{{ asset('assets/img/Document.svg')}}" alt="">
                 </div>
             </div>
             <a href="{{ route('cat.index')}}">Selengkapnya <i class='bx bx-chevron-right' ></i></a>

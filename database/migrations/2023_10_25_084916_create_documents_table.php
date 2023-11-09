@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('file');
             $table->enum('status', ['belum_upload', 'sudah_upload', 'verifikasi_berkas', 'disposisi', 'selesai']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

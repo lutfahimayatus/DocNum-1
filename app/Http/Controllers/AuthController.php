@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\NIP;
 use App\Models\UserLogs;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -77,7 +76,7 @@ class AuthController extends Controller
             $this->validate($request, $rules, $messages);
 
             if (Auth::attempt(['nip' => $request->input('nip'), 'password' => $request->input('password')])) {
-                UserLogs::logAction($request, 'ATTEMPT LOGIN USER', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT LOGIN USER', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                 return redirect('/dashboard')->with('success', 'Login berhasil!');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT LOGIN USER', $request->input('nip'), '', '{"isStatus": false, "pesan": "Gagal"}');
@@ -89,19 +88,9 @@ class AuthController extends Controller
         return view('auth.login', compact('title'));
     }
 
-    public function CheckpointNIP(Request $request)
-    {
-        $nipExists = NIP::where('nip', $request->input('nip'))->exists();
-        if ($nipExists) {
-            return response()->json(['message' => 'NIP tersedia dalam database.']);
-        } else {
-            return response()->json(['message' => 'NIP tidak tersedia dalam database.'], 404);
-        }
-    }
-
     public function Logout(Request $request): RedirectResponse
     {
-        $user = Auth::user()->nip;
+        $user = Auth::user()->id;
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

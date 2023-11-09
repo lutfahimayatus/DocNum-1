@@ -9,11 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class DivisionController extends Controller
 {
+    private function decryptIfEncrypted($encryptedId) 
+    {
+        if (preg_match('/^\d/', $encryptedId)) {
+            return $encryptedId;
+        } else {
+            return decrypt($encryptedId);
+        }
+    }
+
     public function index(Request $request)
     {
         $data = Division::all();
         $title = 'Data Divisi';
-        UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'DataDisivi', '');
+        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataDisivi', '');
         return view('pages.division.index', compact('data','title'));
     }
 
@@ -38,21 +47,23 @@ class DivisionController extends Controller
             ]);
 
             if ($data) {
-                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                 return redirect()->route('div.index')->with('success', 'Berhasil menambahkan divisi');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
                 return back()->withInput()->with('error', 'Gagal menambah divisi');
             }
         }
 
         $title = 'Tambah Divisi';
-        UserLogs::logAction($request, 'Menu Access', Auth::user()->nip, 'TambahDivisi', '');
+        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'TambahDivisi', '');
         return view('pages.division.store', compact('title'));
     }
     
-    public function update(Request $request, $id)
+    public function update(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         if ($request->isMethod('post')) {
             $rules = [
                 'divisi' => 'required|string',
@@ -71,12 +82,12 @@ class DivisionController extends Controller
             $data->kode = $request->input('kode');
     
             if ($data->save()) {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
                 return redirect()->route('div.index', $id)
                     ->with('success', 'Division information updated successfully');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
                 return redirect()->route('div.update', $id)
                     ->with('error', 'Division information update failed');
@@ -84,7 +95,7 @@ class DivisionController extends Controller
         } 
         $data = Division::find($id);
         $title = 'Update Divisi';
-        UserLogs::logAction($request, 'Data Access ID:'.$id, Auth::user()->nip, 'UpdateDivision', '');
+        UserLogs::logAction($request, 'Data Access ID:'.$id, Auth::user()->id, 'UpdateDivision', '');
         return view('pages.division.update', compact('title', 'data'));
     }
 
@@ -94,12 +105,12 @@ class DivisionController extends Controller
 
         if ($data) {
             $data->delete();
-            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
             return redirect()->route('div.index')
                 ->with('success', 'Division deleted successfully');
         } else {
-            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
             return redirect()->route('div.index')
                 ->with('error', 'Division not found');

@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" action="{{ route('profile', $user[0]->id) }}" method="POST" enctype="multipart/form-data">
+        <form class="form-wrapper" action="{{ route('profile', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="profile-wrapper">
@@ -64,19 +64,32 @@
                         @enderror
                     </div>
                     <div class="input-wrapper">
-                        <label class="input-label" for="inputField">Divisi</label>
+                        <label class="input-label" for="divisi_id">Divisi</label>
                         <select name="divisi_id" id="divisi_id" class="input">
-                            <option value="{{ $user[0]->divisi_id == null ? '' : $user[0]->divisi_id }}" selected>{{ $user[0]->divisi_id == null ?  'Pilih Divisi' : $user[0]->divisi->divisi }}</option>
+                            @php
+                                $selectedDivisiId = $user[0]->divisi_id;
+                                $hasSelectedOption = false;
+                            @endphp
                             @foreach ($divisi as $data)
-                                <option value="{{ $data->id }}">{{ $data->divisi }}</option>
+                                <option value="{{ $data->id }}" {{ $data->id == $selectedDivisiId ? 'selected' : '' }}>
+                                    {{ $data->divisi }}
+                                </option>
+                                @if ($data->id == $selectedDivisiId)
+                                    @php
+                                        $hasSelectedOption = true;
+                                    @endphp
+                                @endif
                             @endforeach
-                        </select>                
-                        @error('divisi')
+                            @if (!$hasSelectedOption)
+                                <option value="0" selected>No Division</option>
+                            @endif
+                        </select>
+                        @error('divisi_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                    </div>
+                    </div>                          
                 </div>
             </div>
             <button type="submit">Simpan</button>

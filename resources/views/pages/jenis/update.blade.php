@@ -9,11 +9,13 @@
             @method('POST')
 
             <div class="input-wrapper">
-                <label class="input-label" for="inputField">Kategori</label>
+                <label class="input-label" for="category_id">Kategori</label>
                 <select name="category_id" id="category_id" class="input">
-                    <option value="{{ $data[0]->category_id }}" selected>{{ $data[0]->category->desc }}</option>
+                    <option value="" selected>Pilih Kategori</option>
                     @foreach ($categories as $cat)
-                    <option value="{{ $cat->id }}">{{ $cat->desc }}</option>
+                        <option value="{{ $cat->id }}" {{ $data[0]->category_id == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->desc }}
+                        </option>
                     @endforeach
                 </select>
                 @error('category_id')
@@ -21,7 +23,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div>
+            </div>            
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField"class="input-label" for="inputField">Jenis</label>

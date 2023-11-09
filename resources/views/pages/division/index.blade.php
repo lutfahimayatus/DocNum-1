@@ -22,7 +22,7 @@
                             <td>{{ $div->kode }}</td>
                             <td>{{ $div->divisi }}</td>
                             <td>
-                                <a href="{{ route('div.update', $div->id) }}" class="table-button-primary">Edit</a>
+                                <a href="{{ route('div.update', encrypt($div->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('div.delete', $div->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>

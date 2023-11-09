@@ -24,7 +24,7 @@
                             <td>{{ $dt->jenis }}</td>
                             <td>{{ $dt->category->desc }}</td>
                             <td>
-                                <a href="{{ route('jenis.update', $dt->id) }}" class="table-button-primary">Edit</a>
+                                <a href="{{ route('jenis.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('jenis.delete', $dt->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>

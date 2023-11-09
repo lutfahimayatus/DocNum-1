@@ -12,6 +12,7 @@
                         <th>Name</th>
                         <th>NIP</th>
                         <th>Role</th>
+                        <th>Status</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -22,8 +23,16 @@
                             <td>{{ $user->nip }}</td>
                             <td>{{ $user->role }}</td>
                             <td>
-                                <a href="{{ route('user.update', $user->id) }}" class="table-button-primary">Edit</a>
+                                @if($user->deleted_at)
+                                    <span class="badge badge-danger">Inactive</span>
+                                @else
+                                    <span class="badge badge-success">Active</span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('user.update', encrypt($user->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('user.delete', $user->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="{{ route('user.restore', $user->id) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>
                         </tr>
                     @endforeach

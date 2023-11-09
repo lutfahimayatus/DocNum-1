@@ -9,51 +9,57 @@ use App\Models\Jenis;
 use App\Models\User;
 use App\Models\UserLogs;
 use Illuminate\Support\Facades\Auth;
+use ZipArchive;
 
 class DocumentController extends Controller
 {
-    public function index()
+    private function decryptIfEncrypted($encryptedId) 
+    {
+        if (preg_match('/^\d/', $encryptedId)) {
+            return $encryptedId;
+        } else {
+            return decrypt($encryptedId);
+        }
+    }
+
+    public function index(Request $request)
     {
         $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
         $title = 'Data Dokumen';
         $jenis = Jenis::all();
-        return view('pages.document.index', compact('title', 'data', 'jenis'));
+        $showEntries = $request->input('show_entries', 5);
+        return view('pages.document.index', compact('title', 'data', 'jenis', 'showEntries'));
     }
 
-    public function searchByJenis(Request $request)
+    public function search(Request $request)
     {
         $jenis = Jenis::all();
-        $data = Document::paginate(5);
-
         $search = $request->input('search');
         $jenisId = $request->input('jenis');
+        $showEntries = $request->input('show_entries', 5);
 
-        if ($request->has('search')) {
-            $data = Document::where(function ($query) use ($search, $jenisId) {
-                if (Auth::user()->role === 'employee') {
-                    $query->where(function ($subquery) use ($search) {
-                        $subquery->where('users', Auth::user()->nip)
-                                 ->where('document', 'like', '%' . $search . '%');
-                    });
-                }
+        $query = Document::query();
 
-                if (Auth::user()->role === 'administrator') {
-                    $query->where(function ($subquery) use ($search) {
-                        $subquery->where('document', 'like', '%' . $search . '%')
-                                 ->orWhere('users', 'like', '%' . $search . '%');
-                    });
-                }
-
-                if (!empty($jenisId)) {
-                    $query->where('jenis_id', $jenisId);
-                }
-            })->paginate(5);
+        if (Auth::user()->role === 'employee') {
+            $query->where(function ($subquery) use ($search) {
+                $subquery->where('users', Auth::user()->nip)
+                        ->where('document', 'like', '%' . $search . '%');
+            });
+        } elseif (Auth::user()->role === 'administrator') {
+            $query->where(function ($subquery) use ($search) {
+                $subquery->where('document', 'like', '%' . $search . '%')
+                        ->orWhere('users', 'like', '%' . $search . '%');
+            });
         }
 
-        // Remove the dd($data) line as it's typically used for debugging
+        if (!empty($jenisId)) {
+            $query->where('jenis_id', $jenisId);
+        }
+
+        $data = $query->paginate($showEntries);
 
         $title = 'Data Dokumen';
-        return view('pages.document.index', compact('title', 'data', 'jenis'));
+        return view('pages.document.index', compact('title', 'data', 'jenis', 'showEntries'));
     }
 
     public function generateDocument(Request $request)
@@ -88,11 +94,11 @@ class DocumentController extends Controller
             ]);
 
             if ($data) {
-                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
-                return redirect()->route('employee.document')->with('success', 'Berhasil menambahkan jenis');
+                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('employee.document')->with('success', 'Berhasil generate surat');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
-                return back()->withInput()->with('error', 'Gagal menambah jenis');
+                UserLogs::logAction($request, 'ATTEMPT CREATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
+                return back()->withInput()->with('error', 'Gagal generate surat');
             }
         }
 
@@ -100,7 +106,7 @@ class DocumentController extends Controller
         $kategori = Categories::all();
         $title = 'Generate No. Dokumen';
         $user = User::find(Auth::user()->id);
-        if ($user->divisi !== '') {
+        if ($user->divisi_id != '') {
             return view('pages.document.generate', compact('title', 'jenis', 'kategori'));
         } else {
             return back()->with('error', 'Lengkapi Profile Anda!');
@@ -125,15 +131,17 @@ class DocumentController extends Controller
         return $umurFormatted . '/' . $jenisDokumen->kode . '.' . $sequence . '/' . $namaDivisi . '/' . $tahunBerjalan;
     }
     
-    public function detailDocument(Request $request, $id) 
+    public function detailDocument(Request $request, $encryptedId) 
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
         $data = Document::with('jenis.category')->where('id', $id)->get();
         $title = 'Detail Dokumen';
         return view('pages.document.detail', compact('title','data'));
     }
 
-    public function updateDocument(Request $request, $id)
+    public function updateDocument(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
         if ($request->isMethod('POST')) {
             $rules = [
                 'document' => 'required|string',
@@ -148,7 +156,6 @@ class DocumentController extends Controller
 
             $data = Document::find($id);
             $data->document = $request->input('document');
-            $data->status = $request->input('status');
 
             if ($request->hasFile('file_document')) {
                 $oldFileName = $data->file;
@@ -169,11 +176,11 @@ class DocumentController extends Controller
 
             if ($data->isDirty()) {
                 if ($data->save()) {
-                    UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                    UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                     return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $id)
                         ->with('success', 'Document information updated successfully');
                 } else {
-                    UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                    UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
                     return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $id)
                         ->with('error', 'Document information update failed');
                 }
@@ -185,29 +192,38 @@ class DocumentController extends Controller
 
         $title = 'Update Dokumen';
         $data = Document::find($id);
-        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'DataDocument', '');
+        UserLogs::logAction($request, 'Data Access', Auth::user()->id, 'DataDocument', '');
         return view('pages.document.update', compact('title', 'data'));
     }
 
-    public function downloadDocument($id)
+    public function downloadDocument(Request $request,$id)
     {
         $data = Document::find($id);
-
+    
         if ($data) {
             $filePath = public_path('files') . '/' . $data->file;
     
-            if (file_exists($filePath)) {
-                return response()->download($filePath, $data->file);
-            } else {
-                return redirect()->back()->with('error', 'File not found.');
+            try {
+                if (file_exists($filePath)) {
+                    return response()->download($filePath, $data->file);
+                    UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                } else {
+                    return redirect()->back()->with('error', 'File not found.');
+                    UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
+                }
+            } catch (\Exception $e) {
+                UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
+                return redirect()->back()->with('error', 'An error occurred while downloading the file.');
             }
         } else {
+            UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
             return redirect()->back()->with('error', 'Document not found.');
         }
     }
-
-    public function uploadDocument(Request $request, $id)
+    
+    public function uploadDocument(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
         if ($request->isMethod('POST')) {
             $rules = [
                 'file_document' => 'required|mimes:pdf|max:2048',
@@ -235,12 +251,12 @@ class DocumentController extends Controller
             }
 
             if ($data->save()) {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": true, "pesan": "Sukses"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
                 return redirect()->route('employee.document', $id)
                     ->with('success', 'Document information updated successfully');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->nip, '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
                 return redirect()->route('employee.document', $id)
                     ->with('error', 'Document information update failed');
@@ -249,7 +265,45 @@ class DocumentController extends Controller
 
         $title = 'Upload File Dokumen';
         $data = Document::find($id);
-        UserLogs::logAction($request, 'Data Access', Auth::user()->nip, 'DataDocument', '');
+        UserLogs::logAction($request, 'Data Access', Auth::user()->id, 'DataDocument', '');
         return view('pages.document.upload', compact('title', 'data'));
     }
+
+    public function downloadAllDocuments(Request $request)
+    {
+        try {
+            $documents = Document::all();
+    
+            if ($documents->isEmpty()) {
+                return redirect()->back()->with('error', 'No documents found.');
+            }
+    
+            $zipFileName = 'documents.zip';
+            $zip = new ZipArchive();
+    
+            if ($zip->open($zipFileName, ZipArchive::CREATE) === true) {
+                foreach ($documents as $document) {
+                    $filePath = public_path('files') . '/' . $document->file;
+                    if (file_exists($filePath)) {
+                        $zip->addFile($filePath, $document->file);
+                    } else {
+                        UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "File not exist"}');
+                    }
+                }
+    
+                $zip->close();
+    
+                if ($zip->status === ZipArchive::ER_OK && file_exists($zipFileName)) {
+                    UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                    return response()->download($zipFileName)->deleteFileAfterSend(true);
+                } else {
+                    return redirect()->back()->with('error', 'No files to download or failed to create the zip archive.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Failed to create the zip archive.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }    
 }

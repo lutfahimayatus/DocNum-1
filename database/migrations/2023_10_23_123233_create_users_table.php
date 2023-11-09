@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('nomor_hp');
-            $table->string('foto_profile');
+            $table->string('foto_profile')->nullable();
             $table->enum('role', ['administrator','employee']);
             $table->string('nip');
             $table->foreignId('divisi_id')->constraint('divisions')->nullable();;
             $table->string('password');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

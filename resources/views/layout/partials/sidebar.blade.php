@@ -1,4 +1,4 @@
-<div class="scrollable-sidebar">
+<div class="scrollable-sidebar" style="max-height: 80vh; overflow-y: auto;">
     <section class="sidebar">
         <div class="logo-details">
             <a href="#">
@@ -89,9 +89,9 @@
                     </a>
                     <ul class="sub-menu">
                         <li @if (Route::currentRouteName() == 'profile') class="active" @endif>
-                            <a class="link_name" href="{{ route('profile', Auth::user()->id) }}">Edit Profil</a></li>
+                            <a class="link_name" href="{{ route('profile', encrypt(Auth::user()->id)) }}">Edit Profil</a></li>
                         <li @if (Route::currentRouteName() == 'profile.change.password') class="active" @endif>
-                            <a class="link_name" href="{{ route('profile.change.password', Auth::user()->id) }}">Ganti Kata Sandi</a></li>
+                            <a class="link_name" href="{{ route('profile.change.password', encrypt(Auth::user()->id)) }}">Ganti Kata Sandi</a></li>
                         <li>
                             <a class="link_name" href="{{ route('logout') }}">Keluar</a></li>
                     </ul>
