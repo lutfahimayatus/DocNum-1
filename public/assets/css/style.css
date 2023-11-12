@@ -714,14 +714,18 @@ a {
     width: 100%;
     height: 100%;
 }
+
 button {
     width: 100px;
     height: 45px;
-    margin-top: 10px;
     border-radius: 10px;
     color: white;
     background-color: #B42021;
     border: none; /* Remove the default button border */
+}
+
+hr {
+    margin: 10px 0px 10px 0px; 
 }
 
 .content .main .form-wrapper .button-wrapper {
@@ -781,6 +785,16 @@ button {
     margin: 50px;
 }
 
+.content .main .table-responsive form {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.content .main .table-responsive .input-wrapper {
+    margin: 0px 10px 0px 0px;
+}
+
 .content .main .table-responsive .table-button {
     display: block; /* Change display to block */
     width: 100%;
@@ -829,7 +843,9 @@ button {
 
 /* Style the table header (thead) */
 .styled-table th {
-    background-color: #f2f2f2; /* Background color for header cells */
+    color: #fff;
+    margin-top: 10px;
+    background-color: #B42021; /* Background color for header cells */
     border: 1px solid #dddddd; /* Add a border to header cells */
     text-align: left;
     padding: 8px;
@@ -837,6 +853,8 @@ button {
 
 /* Style the table body (tbody) */
 .styled-table td {
+    color: #fff;
+    background-color: #b4202080;
     border: 1px solid #dddddd; /* Add a border to body cells */
     text-align: left;
     padding: 8px;
@@ -1067,76 +1085,3 @@ p {
     font-weight: 550;
     transition: all 0.5s ease;
 }
-
-/* 
-.home-section .categori {
-    position: relative;
-    background: rgb(255, 255, 255);
-    width: 439px;
-    height: 194px;
-    top: -161px;
-    left: 852px;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.5s ease 0s;
-}
-
-.close.home-section .categori {
-    width: 574px;
-    left: 978px;
-    transition: all 0.5s ease;
-}
-
-.home-section .categori img {
-    position: relative;
-    left: 348px;
-    right: 42px;
-    top: -25px;
-    width: 76px;
-    height: 60px;
-    transition: all 0.5s ease;
-}
-
-.close.home-section .categori img {
-    left: 491px;
-    position: relative;
-    top: -25px;
-    height: 60px;
-    transition: all 0.5s ease;
-}
-
-.link {
-    position: relative;
-    bottom: -28px;
-    text-align: center;
-    padding: 10px 0;
-    background: #B42021;
-    
-}
-
-.link a {
-    color: #fff;
-    margin-left: -292px;
-    font-weight: 550;
-    transition: all 0.5s ease;
-}
-
-.close.home-section .link a{
-    margin-left: -417px;
-    transition: all 0.5s ease;
-}
-
-
-.categori .categori-text {
-    position: relative;
-    top: 44px;
-    left: 29px;
-    font-weight: 550;
-}
-
-.categori i{
-    font-size: 27px;
-    position: relative;
-    float: right;
-    right: 20px;
-} */

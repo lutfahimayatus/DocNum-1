@@ -12,6 +12,7 @@
                         <th>No</th>
                         <th>Kode</th>
                         <th>Divisi</th>
+                        <th>Status</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -22,8 +23,16 @@
                             <td>{{ $div->kode }}</td>
                             <td>{{ $div->divisi }}</td>
                             <td>
+                                @if($div->deleted_at)
+                                    <span class="badge badge-danger">Inactive</span>
+                                @else
+                                    <span class="badge badge-success">Active</span>
+                                @endif
+                            </td>
+                            <td>
                                 <a href="{{ route('div.update', encrypt($div->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('div.delete', $div->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="{{ route('div.restore', $div->id) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>
                         </tr>
                     @endforeach

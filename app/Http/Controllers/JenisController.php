@@ -22,7 +22,7 @@ class JenisController extends Controller
     public function index(Request $request)
     {
         $title = 'Data Jenis';
-        $data = Jenis::with('category')->get();
+        $data = Jenis::with('category')->withTrashed()->get();
         UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataJenis', '');
         return view('pages.jenis.index', compact('title', 'data'));
     }
@@ -106,6 +106,23 @@ class JenisController extends Controller
         UserLogs::logAction($request, 'Data Access', Auth::user()->id, 'Jenis ID:'.$id, '');
         return view('pages.jenis.update', compact('data', 'title', 'categories'));
     }
+
+    public function restore(Request $request, $id)
+    {
+        $data = Jenis::withTrashed()->find($id);
+    
+        if ($data) {
+            if ($data->trashed()) {
+                $data->restore();
+                UserLogs::logAction($request, 'ATTEMPT RESTORE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('jenis.index')->with('success', 'Jenis restored successfully');
+            } else {
+                return redirect()->route('jenis.index')->with('error', 'Jenis is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('jenis.index')->with('error', 'Jenis not found');
+        }
+    }    
 
     public function delete(Request $request, $id)
     {

@@ -23,7 +23,7 @@ class AuthController extends Controller
                 'role' => 'required|string',
                 'password' => 'required|min:8|confirmed',
             ];
-     
+    
             $messages = [
                 'nip.required' => 'Kolom NIP wajib diisi.',
                 'role.required' => 'Kolom Role wajib diisi.',
@@ -33,7 +33,7 @@ class AuthController extends Controller
             ];
     
             $this->validate($request, $rules, $messages);
-            
+    
             try {
                 $registerUser = User::create([
                     'name' => '',
@@ -45,17 +45,18 @@ class AuthController extends Controller
                     'role' => $request->input('role'),
                     'password' => bcrypt($request->input('password')),
                 ]);
-
+    
                 if ($registerUser) {
-                    UserLogs::logAction($request, 'ATTEMPT REGISTER USER', $request->input('nip'), '', '{"isStatus": true, "pesan": "Sukses"}');
+                    UserLogs::logAction($request, 'ATTEMPT REGISTER USER', '0', '', '{"isStatus": true, "pesan": "Sukses"}');
                     return redirect('/register')->with('success', 'Pendaftaran berhasil, anda sekarang dapat masuk.');
                 }
             } catch (\Exception $e) {
-                UserLogs::logAction($request, 'ATTEMPT REGISTER USER', $request->input('nip'), '', '{"isStatus": false, "pesan": "Gagal"}');
-                return back()->withInput()->with('error', 'Pendaftaran gagal: ');
-            }    
-        } 
-        
+                $errorMessage = 'Pendaftaran gagal: ' . $e->getMessage();
+                UserLogs::logAction($request, 'ATTEMPT REGISTER USER', '0', '', '{"isStatus": false, "pesan": "' . $errorMessage . '"}');
+                return back()->withInput()->with('error', $errorMessage);
+            }
+        }
+    
         $title = 'Register';
         return view('auth.Register', compact('title'));
     }    
@@ -79,7 +80,7 @@ class AuthController extends Controller
                 UserLogs::logAction($request, 'ATTEMPT LOGIN USER', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
                 return redirect('/dashboard')->with('success', 'Login berhasil!');
             } else {
-                UserLogs::logAction($request, 'ATTEMPT LOGIN USER', $request->input('nip'), '', '{"isStatus": false, "pesan": "Gagal"}');
+                UserLogs::logAction($request, 'ATTEMPT LOGIN USER', '0', '', '{"isStatus": false, "pesan": "Gagal"}');
                 return redirect('/login')->with('error', 'Password salah!');
             }
         } 

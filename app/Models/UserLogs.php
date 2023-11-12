@@ -20,11 +20,11 @@ class UserLogs extends Model
         'response'
     ];
 
-    public static function logAction(Request $request, $log, $nip, $permintaan, $response)
+    public static function logAction(Request $request, $log, $id, $permintaan, $response)
     {
         self::create([
             'ip' => $request->ip(),
-            'users' => $nip,
+            'users' => $id,
             'log' => $log,
             'request' => $permintaan,
             'response' => $response

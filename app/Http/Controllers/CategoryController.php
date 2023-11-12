@@ -20,7 +20,7 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $data = Categories::all();
+        $data = Categories::withTrashed()->get();
         $title = 'Data Kategori';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataKategori', '');
         return view('pages.category.index', compact('data', 'title'));
@@ -93,6 +93,23 @@ class CategoryController extends Controller
         UserLogs::logAction($request, 'Data Access ID:'.$id, Auth::user()->id, 'UpdateCategory', '');
         return view('pages.category.update', compact('data', 'title'));
     }
+
+    public function restore(Request $request, $id)
+    {
+        $data = Categories::withTrashed()->find($id);
+    
+        if ($data) {
+            if ($data->trashed()) {
+                $data->restore();
+                UserLogs::logAction($request, 'ATTEMPT RESTORE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('cat.index')->with('success', 'Categories restored successfully');
+            } else {
+                return redirect()->route('cat.index')->with('error', 'Categories is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('cat.index')->with('error', 'Categories not found');
+        }
+    }    
 
     public function delete(Request $request, $id)
     {

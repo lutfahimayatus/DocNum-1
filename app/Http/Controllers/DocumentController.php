@@ -9,7 +9,9 @@ use App\Models\Jenis;
 use App\Models\User;
 use App\Models\UserLogs;
 use Illuminate\Support\Facades\Auth;
-use ZipArchive;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DocumentsExport;
 
 class DocumentController extends Controller
 {
@@ -24,10 +26,11 @@ class DocumentController extends Controller
 
     public function index(Request $request)
     {
-        $data = Auth::user()->role === 'administrator' ? Document::paginate(5) : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
+        $data = Auth::user()->role === 'administrator' ? Document::with('jenis', 'user')->get() : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
         $title = 'Data Dokumen';
         $jenis = Jenis::all();
         $showEntries = $request->input('show_entries', 5);
+        //dd($data);
         return view('pages.document.index', compact('title', 'data', 'jenis', 'showEntries'));
     }
 
@@ -84,8 +87,9 @@ class DocumentController extends Controller
 
             $kode = $this->generateDocumentNumber($jenisDokumen);
 
+            $user_nip = Auth::user()->nip;
             $data = Document::create([
-                'users' => Auth::user()->nip,
+                'users' => $user_nip,
                 'document_number' => $kode,
                 'document' => $request->input('document'),
                 'jenis_id' => $jenisDokumen->id,
@@ -171,6 +175,10 @@ class DocumentController extends Controller
                     if (file_exists($oldFilePath)) {
                         unlink($oldFilePath);
                     }
+                }
+            } else {
+                if ($request->has('status') && $request->input('status') !== '') {
+                    $data->status = $request->input('status');
                 }
             }
 
@@ -272,38 +280,53 @@ class DocumentController extends Controller
     public function downloadAllDocuments(Request $request)
     {
         try {
-            $documents = Document::all();
-    
+            $dateRange = explode(' - ', $request->input('daterange'));
+
+            if (count($dateRange) !== 2) {
+                return redirect()->back()->with('error', 'Invalid date range format.');
+            }
+
+            $startDate = Carbon::parse($dateRange[0]);
+            $endDate = Carbon::parse($dateRange[1]);
+
+            $documents = Document::with('jenis', 'user')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->get();
+
             if ($documents->isEmpty()) {
-                return redirect()->back()->with('error', 'No documents found.');
+                return redirect()->back()->with('error', 'No documents found within the specified date range.');
             }
-    
-            $zipFileName = 'documents.zip';
-            $zip = new ZipArchive();
-    
-            if ($zip->open($zipFileName, ZipArchive::CREATE) === true) {
-                foreach ($documents as $document) {
-                    $filePath = public_path('files') . '/' . $document->file;
-                    if (file_exists($filePath)) {
-                        $zip->addFile($filePath, $document->file);
-                    } else {
-                        UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "File not exist"}');
-                    }
-                }
-    
-                $zip->close();
-    
-                if ($zip->status === ZipArchive::ER_OK && file_exists($zipFileName)) {
-                    UserLogs::logAction($request, 'ATTEMPT DOWNLOAD DOCUMENT', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
-                    return response()->download($zipFileName)->deleteFileAfterSend(true);
-                } else {
-                    return redirect()->back()->with('error', 'No files to download or failed to create the zip archive.');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Failed to create the zip archive.');
-            }
+
+            return Excel::download(new DocumentsExport($documents), $startDate . '-' . $endDate . '.xlsx');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
-    }    
+    }
+
+    public function downloadEmployeeDocuments(Request $request)
+    {
+        try {
+            $dateRange = explode(' - ', $request->input('daterange'));
+
+            if (count($dateRange) !== 2) {
+                return redirect()->back()->with('error', 'Invalid date range format.');
+            }
+
+            $startDate = Carbon::parse($dateRange[0]);
+            $endDate = Carbon::parse($dateRange[1]);
+
+            $documents = Document::with('jenis', 'user')
+                ->where('users', Auth::user()->nip)
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->get();
+
+            if ($documents->isEmpty()) {
+                return redirect()->back()->with('error', 'No documents found within the specified date range.');
+            }
+
+            return Excel::download(new DocumentsExport($documents), $startDate . '-' . $endDate . '.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
 }

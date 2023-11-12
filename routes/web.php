@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('document/history', 'index')->name('employee.document');
                 Route::get('document/detail/employee/{id}', 'detailDocument')->name('employee.detail');
                 Route::get('document/download/employee/{id}', 'downloadDocument')->name('employee.download');
+                Route::post('document/download/employee/report', 'downloadEmployeeDocuments')->name('employee.download.report');
                 Route::match(['get', 'post'],'document/upload/employee/{id}', 'uploadDocument')->name('employee.upload');
                 Route::match(['get', 'post'], 'document/generate', 'generateDocument')->name('employee.generate');
                 Route::match(['get', 'post'], 'document/update/employee/{id}', 'updateDocument')->name('employee.document.update');
@@ -67,18 +68,21 @@ Route::middleware(['auth'])->group(function () {
             Route::controller(CategoryController::class)->group(function () {
                 Route::get('/category', 'index')->name('cat.index');
                 Route::get('/category/{id}/delete', 'delete')->name('cat.delete');
+                Route::get('/category/{id}/restore', 'restore')->name('cat.restore');
                 Route::match(['get', 'post'], '/category/create', 'store')->name('cat.create');
                 Route::match(['get', 'post'], '/category/{id}/update', 'update')->name('cat.update');
             });
             Route::controller(DivisionController::class)->group(function () {
                 Route::get('/division', 'index')->name('div.index');
                 Route::get('/division/{id}/delete', 'delete')->name('div.delete');
+                Route::get('/division/{id}/restore', 'restore')->name('div.restore');
                 Route::match(['get', 'post'], '/division/create', 'store')->name('div.create');
                 Route::match(['get', 'post'], '/division/{id}/update', 'update')->name('div.update');
             });
             Route::controller(JenisController::class)->group(function () {
                 Route::get('/jenis', 'index')->name('jenis.index');
                 Route::get('/jenis/{id}/delete', 'delete')->name('jenis.delete');
+                Route::get('/jenis/{id}/restore', 'restore')->name('jenis.restore');
                 Route::match(['get', 'post'], '/jenis/create', 'store')->name('jenis.create');
                 Route::match(['get', 'post'], '/jenis/{id}/update', 'update')->name('jenis.update');
             });
@@ -95,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/document/detail/{id}', 'detailDocument')->name('document.detail');
                 Route::match(['get', 'post'], '/document/{id}/update', 'updateDocument')->name('document.update');
                 Route::get('/document/download/single/{id}', 'downloadDocument')->name('document.download.single');
-                Route::get('/document/download/all', 'downloadAllDocuments')->name('document.download.all');
+                Route::post('/document/download/all', 'downloadAllDocuments')->name('document.download.all');
             });
         });
     });

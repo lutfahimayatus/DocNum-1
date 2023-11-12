@@ -20,7 +20,7 @@ class DivisionController extends Controller
 
     public function index(Request $request)
     {
-        $data = Division::all();
+        $data = Division::withTrashed()->get();
         $title = 'Data Divisi';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataDisivi', '');
         return view('pages.division.index', compact('data','title'));
@@ -98,6 +98,23 @@ class DivisionController extends Controller
         UserLogs::logAction($request, 'Data Access ID:'.$id, Auth::user()->id, 'UpdateDivision', '');
         return view('pages.division.update', compact('title', 'data'));
     }
+
+    public function restore(Request $request, $id)
+    {
+        $data = Division::withTrashed()->find($id);
+    
+        if ($data) {
+            if ($data->trashed()) {
+                $data->restore();
+                UserLogs::logAction($request, 'ATTEMPT RESTORE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('div.index')->with('success', 'Division restored successfully');
+            } else {
+                return redirect()->route('div.index')->with('error', 'Division is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('div.index')->with('error', 'Division not found');
+        }
+    }    
 
     public function delete(Request $request, $id)
     {

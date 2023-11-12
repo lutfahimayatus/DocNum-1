@@ -13,6 +13,7 @@
                         <th>Kode</th>
                         <th>Jenis</th>
                         <th>Kategori</th>
+                        <th>Status</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -24,8 +25,16 @@
                             <td>{{ $dt->jenis }}</td>
                             <td>{{ $dt->category->desc }}</td>
                             <td>
+                                @if($dt->deleted_at)
+                                    <span class="badge badge-danger">Inactive</span>
+                                @else
+                                    <span class="badge badge-success">Active</span>
+                                @endif
+                            </td>
+                            <td>
                                 <a href="{{ route('jenis.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('jenis.delete', $dt->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="{{ route('jenis.restore', $dt->id) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>
                         </tr>
                     @endforeach

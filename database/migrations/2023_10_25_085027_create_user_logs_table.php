@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_logs', function (Blueprint $table) {
             $table->id();
             $table->string('ip');
-            $table->foreignId('users')->constraint('users');
+            $table->foreignId('users')->nullable();
             $table->string('log');
             $table->string('request');
             $table->string('response');
