@@ -3,6 +3,22 @@
 @section('content')
 
 <div class="content">
+    <div class="card-history">
+        <div class="card-container">
+            <div class="card-content">
+                <div class="card-saperate">
+                    <div class="card-info">
+                        <h1 class="angka">{{ $totalDoc }}</h1>
+                        <p class="judul">Jumlah No. Surat</p>
+                    </div>
+                    <div class="card-img">
+                        <img src="{{ asset('assets/img/mail.png')}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="main">
         @if(Auth::user()->role === 'administrator')
         <div class="table-responsive">

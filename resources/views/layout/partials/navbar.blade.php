@@ -17,24 +17,24 @@
                 </a>
             </div>
         </div>
-        <div class="breadcrumb">
-            <div class="alert-container">
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if(session('message'))
-                    <div class="alert alert-primary">
-                        {{ session('message') }}
-                    </div>
-                @endif
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
+    </div>
+</div>
+<div class="breadcrumb">
+    <div class="alert-container">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
-        </div>
+        @endif
+        @if(session('message'))
+            <div class="alert alert-primary">
+                {{ session('message') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
     </div>
 </div>

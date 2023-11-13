@@ -28,10 +28,11 @@ class DocumentController extends Controller
     {
         $data = Auth::user()->role === 'administrator' ? Document::with('jenis', 'user')->get() : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
         $title = 'Data Dokumen';
+        $totalDoc = Document::count();
         $jenis = Jenis::all();
         $showEntries = $request->input('show_entries', 5);
         //dd($data);
-        return view('pages.document.index', compact('title', 'data', 'jenis', 'showEntries'));
+        return view('pages.document.index', compact('totalDoc', 'title', 'data', 'jenis', 'showEntries'));
     }
 
     public function search(Request $request)
@@ -61,8 +62,9 @@ class DocumentController extends Controller
 
         $data = $query->paginate($showEntries);
 
+        $totalDoc = Document::count();
         $title = 'Data Dokumen';
-        return view('pages.document.index', compact('title', 'data', 'jenis', 'showEntries'));
+        return view('pages.document.index', compact('totalDoc', 'title', 'data', 'jenis', 'showEntries'));
     }
 
     public function generateDocument(Request $request)

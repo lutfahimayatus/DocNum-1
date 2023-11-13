@@ -386,9 +386,8 @@ a {
 }
 
 .home-section .hero {
-    display: flex;
     background: #B42021;
-    height: 300px;
+    max-height: 100px;
     padding: 10px;
     flex-direction: row;
 }
@@ -399,7 +398,6 @@ a {
 }
 
 .home-section .hero .navbar .navbar-container {
-    margin-top: 25px;
     margin-left: 75px;
     margin-right: 75px;
     display: flex;
@@ -454,22 +452,20 @@ a {
     background-color: #4CAF50;
     color: white;
     padding: 10px;
-    border-radius: 5px;
 }
 
 .alert.alert-primary {
     background-color: #337ab7;
     color: white;
     padding: 10px;
-    border-radius: 5px;
 }
 
 .alert.alert-danger {
     background-color: #d9534f;
     color: white;
     padding: 10px;
-    border-radius: 5px;
 }
+
 .home-section .hero .breadcrumb {
     display: flex;
     margin-top: 25px;
@@ -507,9 +503,9 @@ a {
 }
 
 .content {
-    display: flex;
-    margin-top: -125px;
+    display: block;
     padding: 10px;
+    margin-top: 75px;
     flex-direction: row;
 }
 
@@ -518,16 +514,11 @@ a {
     margin-left: 75px;
     margin-right: 75px;
     background: #FFF;
-    width: 100%;
     min-height: 450px;
     border-radius: 10px;
     transition: all 0.5s ease;
     justify-content: space-between;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow size */  
-}
-
-.close .content .main {
-    width: 100%;
 }
 
 .content .main .text-main {
@@ -726,6 +717,15 @@ button {
 
 hr {
     margin: 10px 0px 10px 0px; 
+}
+
+.search-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-info .search {
+    display: block;
 }
 
 .content .main .form-wrapper .button-wrapper {
@@ -977,7 +977,23 @@ hr {
     font-size: 40px;
 }
 
-.home-section .card-container .card-content .info .card-info .judul-info {
+.home-section .card-container .card-content .card-info {
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.home-section .card-container .card-content .card-info .judul{
+    text-align: center;
+    font-weight: 550;
+}
+
+.home-section .card-container .card-content .card-info .angka {
+    font-size: xx-large;
+    min-height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
@@ -989,11 +1005,18 @@ p {
     margin-inline-end: 0px;
 }
 
-.home-section .card-container .card-content .info .card-img {
-    max-width: 100%;
+.home-section .card-container .card-content .card-saperate .card-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 25px;
+    height: 100%;
 }
 
-
+.home-section .card-container .card-content .card-saperate .card-img img {
+    max-width: 100px;
+    max-height: 100px;
+}
 
 .home-section .user {
     background: #fff;
@@ -1043,10 +1066,17 @@ p {
 }
 
 .card {
-    padding-left: 60px;
-    padding-right: 60px;
+    margin-left: 60px;
+    margin-right: 60px;
     display: flex;
     justify-content: space-between;
+}
+
+.card-history {
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    width: 50%;
 }
 
 .user .user-text {
