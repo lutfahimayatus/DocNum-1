@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" method="POST" action="{{ Auth::user()->role == 'administrator' ? route('document.update', $data->id) : route('employee.document.update', $data->id) }}" enctype="multipart/form-data">
+        <form class="form-wrapper" method="POST" action="{{ Auth::user()->role == 'administrator' ? route('document.update', encrypt($data->id)) : route('employee.document.update', encrypt($data->id)) }}" enctype="multipart/form-data">
             @csrf
             @method('POST')
 
@@ -72,7 +72,7 @@
             </div>
             @endif
 
-            <button type="submit">Update Dokumen</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 </div>

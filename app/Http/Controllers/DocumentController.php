@@ -29,10 +29,10 @@ class DocumentController extends Controller
         $data = Auth::user()->role === 'administrator' ? Document::with('jenis', 'user')->get() : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
         $title = 'Data Dokumen';
         $totalDoc = Document::count();
-        $jenis = Jenis::all();
+        $totalDocNotConfirmed = Document::where('status', '!=' ,'selesai')->count();
+        $jenis = Jenis::all()->sortBy('jenis');
         $showEntries = $request->input('show_entries', 5);
-        //dd($data);
-        return view('pages.document.index', compact('totalDoc', 'title', 'data', 'jenis', 'showEntries'));
+        return view('pages.document.index', compact('totalDoc', 'totalDocNotConfirmed', 'title', 'data', 'jenis', 'showEntries'));
     }
 
     public function search(Request $request)
@@ -187,11 +187,11 @@ class DocumentController extends Controller
             if ($data->isDirty()) {
                 if ($data->save()) {
                     UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
-                    return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $id)
+                    return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $encryptedId)
                         ->with('success', 'Document information updated successfully');
                 } else {
                     UserLogs::logAction($request, 'ATTEMPT UPDATE DOCUMENT', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
-                    return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $id)
+                    return redirect()->route(Auth::user()->role == 'administrator' ? 'document.update' : 'employee.document', $encryptedId)
                         ->with('error', 'Document information update failed');
                 }
             } else {

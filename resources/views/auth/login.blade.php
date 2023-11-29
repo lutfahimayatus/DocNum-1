@@ -9,6 +9,9 @@
                 <div class="input-group">
                     <label for="nip">NIP</label>
                     <input type="number" id="nip" name="nip" value="{{ old('nip') }}" placeholder="Masukkan Nomor Induk Pegawai" required>
+                    @error('nip')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="input-wrapper">
@@ -16,6 +19,9 @@
                 <div class="input-group">
                     <input type="password" id="password" name="password" placeholder="Masukkan Kata Sandi" required>
                     <i class="toggle-password-icon far fa-eye" data-target="password"></i>
+                    @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <br>

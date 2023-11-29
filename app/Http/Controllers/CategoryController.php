@@ -78,12 +78,12 @@ class CategoryController extends Controller
             if ($data->save()) {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
-                return redirect()->route('cat.index', $id)
+                return redirect()->route('cat.index', $encryptedId)
                     ->with('success', 'Category information updated successfully');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
-                return redirect()->route('cat.update', $id)
+                return redirect()->route('cat.update', $encryptedId)
                     ->with('error', 'Category information update failed');
             }
         } 
@@ -94,8 +94,10 @@ class CategoryController extends Controller
         return view('pages.category.update', compact('data', 'title'));
     }
 
-    public function restore(Request $request, $id)
+    public function restore(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         $data = Categories::withTrashed()->find($id);
     
         if ($data) {
@@ -111,8 +113,10 @@ class CategoryController extends Controller
         }
     }    
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         $data = Categories::find($id);
 
         if ($data) {

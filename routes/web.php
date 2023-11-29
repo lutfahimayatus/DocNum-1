@@ -75,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
             Route::controller(DivisionController::class)->group(function () {
                 Route::get('/division', 'index')->name('div.index');
                 Route::get('/division/{id}/delete', 'delete')->name('div.delete');
+                Route::get('/division/{id}/permanent-delete', 'permanentDelete')->name('div.permanent.delete');
                 Route::get('/division/{id}/restore', 'restore')->name('div.restore');
                 Route::match(['get', 'post'], '/division/create', 'store')->name('div.create');
                 Route::match(['get', 'post'], '/division/{id}/update', 'update')->name('div.update');

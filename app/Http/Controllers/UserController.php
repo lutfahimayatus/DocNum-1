@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\Division;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -89,7 +90,10 @@ class UserController extends Controller
                 'name' => 'required|string',
                 'nomor_hp' => 'required|string',
                 'nip' => 'required|unique:users,nip,'.$id,
-                'email' => 'required',
+                'email' => [
+                    'required',
+                    Rule::unique('users', 'email')->ignore($id),
+                ],
                 'role' => 'required',
                 'divisi_id' => 'required',
             ];
@@ -117,13 +121,12 @@ class UserController extends Controller
     
             if ($user->save()) {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
-
-                return redirect()->route('user.index', $id)
+                return redirect()->route('user.index', $encryptedId)
                     ->with('success', 'User information updated successfully');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
-                return redirect()->route('user.update', $id)
+                return redirect()->route('user.update', $encryptedId)
                     ->with('error', 'User information update failed');
             }
         } 
@@ -143,8 +146,10 @@ class UserController extends Controller
         return view('pages.users.update', compact('user', 'title', 'divisi'));
     }    
 
-    public function restore(Request $request, $id)
+    public function restore(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         $user = User::withTrashed()->find($id);
     
         if ($user) {
@@ -160,8 +165,10 @@ class UserController extends Controller
         }
     }    
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+        
         $user = User::find($id);
     
         if ($user) {

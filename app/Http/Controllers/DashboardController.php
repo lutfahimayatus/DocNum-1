@@ -56,16 +56,16 @@ class DashboardController extends Controller
                 $data->password = bcrypt($request->input('new_password'));
                 if ($data->save()) {
                     UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
-                    return redirect()->route('profile.change.password', $id)
+                    return redirect()->route('profile.change.password', $encryptedId)
                         ->with('success', 'User password updated successfully');
                 } else {
                     UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
-                    return redirect()->route('profile.change.password', $id)
+                    return redirect()->route('profile.change.password', $encryptedId)
                         ->with('error', 'User password update failed');
                 }
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE USER PASSWORD', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
-                return redirect()->route('profile.change.password', $id)
+                return redirect()->route('profile.change.password', $encryptedId)
                     ->with('error', 'Old password is incorrect');
             }
         }
@@ -116,17 +116,16 @@ class DashboardController extends Controller
                 $user->foto_profile = $fileName;
             }
 
-            $encrypted_id = encrypt($id);
             if ($user->save()) {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE USER DATA', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
                 
-                return redirect()->route('profile', $encrypted_id)
+                return redirect()->route('profile', $encryptedId)
                     ->with('success', 'User information updated successfully');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE USER DATA', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
-                return redirect()->route('profile', $encrypted_id)
+                return redirect()->route('profile', $encryptedId)
                     ->with('error', 'User information update failed');
             }
         }

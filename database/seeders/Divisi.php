@@ -14,13 +14,7 @@ class Divisi extends Seeder
     public function run(): void
     {
         Division::insert([
-            ['kode' => 'TDE' ,'divisi' => 'Perencanaan'],
-            ['kode' => 'EDR' ,'divisi' => 'Pengadaan & Pengembangan'],
-            ['kode' => 'DAS' ,'divisi' => 'Operasional TI'],
-            ['kode' => 'GGWP' ,'divisi' => 'Pengamanan Informasi'],
-            ['kode' => 'EZ' ,'divisi' => 'MIS'],
-            ['kode' => 'GE' ,'divisi' => 'E-Banking'],
-            ['kode' => 'EG' ,'divisi' => 'End User Computing'],
+            ['kode' => 'DTI' ,'divisi' => 'Divisi Teknologi Informasi'],
         ]);
     }
 }

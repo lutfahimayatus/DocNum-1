@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" method="POST" action="{{ route('user.update', $user[0]->id) }}">
+        <form class="form-wrapper" method="POST" action="{{ route('user.update', encrypt($user[0]->id)) }}">
             @csrf
             @method('POST')
             <div class="input-wrapper">

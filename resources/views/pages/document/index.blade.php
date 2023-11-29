@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="content">
+    @if(Auth::user()->role === 'administrator')
     <div class="card-history">
         <div class="card-container">
             <div class="card-content">
@@ -17,7 +18,21 @@
                 </div>
             </div>
         </div>
+        <div class="card-container">
+            <div class="card-content">
+                <div class="card-saperate">
+                    <div class="card-info">
+                        <h1 class="angka">{{ $totalDocNotConfirmed }}</h1>
+                        <p class="judul">Jumlah Surat Belum Konfirmasi</p>
+                    </div>
+                    <div class="card-img">
+                        <img src="{{ asset('assets/img/mail.png')}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    @endif
     
     <div class="main">
         @if(Auth::user()->role === 'administrator')
@@ -63,6 +78,7 @@
                         <th>Nama Dokumen</th>
                         <th>User Log</th>
                         <th>Tgl Generate</th>
+                        <th>Status</th>
                         <th>Dokumen</th>
                     </tr>
                 </thead>
@@ -73,8 +89,21 @@
                             <td>{{ $dt->document_number}}</td>
                             <td>{{ $dt->jenis->kode}}</td>
                             <td>{{ $dt->document}}</td>
-                            <td>{{ $dt->user->nip}} - {{ $dt->user->name }}</td>
+                            <td>{{ $dt->user->nip ?? 'NIP Not Found'}} - {{ $dt->user->name ?? 'Name Not Found' }}</td>
                             <td>{{ $dt->created_at}}</td>
+                            <td>
+                                @if($dt->status == 'belum_upload')
+                                    <span class="badge badge-warning">Belum Upload</span>
+                                @elseif($dt->status == 'sudah_upload')
+                                    <span class="badge badge-primary">Sudah Upload</span>
+                                @elseif($dt->status == 'verifikasi_berkas')
+                                    <span class="badge badge-primary">Verifikasi Berkas</span>
+                                @elseif($dt->status == 'disposisi')
+                                    <span class="badge badge-primary">Disposisi</span>
+                                @elseif($dt->status == 'selesai')
+                                    <span class="badge badge-success">Selesai</span>
+                                @endif
+                            </td>                            
                             <td>
                                 <a href="{{ route('document.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('document.download.single', $dt->id) }}" class="table-button-primary">Download</a>
@@ -179,18 +208,18 @@
                         </div>
                         <div>
                             <p>Tanggal      : <span>{{ $dokumen->created_at }}</span></p>
-                            @if ($dokumen->status == 'belum_upload')
-                                <p>status : <span class="belum-upload">Belum Upload</span></p>
-                            @elseif ($dokumen->status == 'sudah_upload')
-                                <p>status : <span class="sudah-upload">Sudah Upload</span></p>
-                            @elseif ($dokumen->status == 'verifikasi_berkas')
-                                <p>status : <span class="verifikasi-berkas">Verifikasi Berkas</span></p>
-                            @elseif ($dokumen->status == 'disposisi')
-                                <p>status : <span class="disposisi">Disposisi</span></p>
-                            @elseif ($dokumen->status == 'selesai')
-                                <p>status : <span class="selesai">Selesai</span></p>
+                            @if($dokumen->status == 'belum_upload')
+                                <p>status : <span class="badge badge-warning">Belum Upload</span> </p>
+                            @elseif($dokumen->status == 'sudah_upload')
+                                <p>status : <span class="badge badge-primary">Sudah Upload</span> </p>
+                            @elseif($dokumen->status == 'verifikasi_berkas')
+                                <p>status : <span class="badge badge-primary">Verifikasi Berkas</span> </p>
+                            @elseif($dokumen->status == 'disposisi')
+                                <p>status : <span class="badge badge-primary">Disposisi</span> </p>
+                            @elseif($dokumen->status == 'selesai')
+                                <p>status : <span class="badge badge-success">Selesai</span> </p>
                             @else
-                                <p>Unknown status: <span>{{ $dokumen->status }}</span></p>
+                                <p>Unknown status: <span>{{ $dokumen->status }}</span> </p>
                             @endif
                         </div>
                     </div>

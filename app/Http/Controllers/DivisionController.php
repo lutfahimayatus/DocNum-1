@@ -22,7 +22,7 @@ class DivisionController extends Controller
     {
         $data = Division::withTrashed()->get();
         $title = 'Data Divisi';
-        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataDisivi', '');
+        UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataDivisi', '');
         return view('pages.division.index', compact('data','title'));
     }
 
@@ -84,12 +84,12 @@ class DivisionController extends Controller
             if ($data->save()) {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
 
-                return redirect()->route('div.index', $id)
+                return redirect()->route('div.index', $encryptedId)
                     ->with('success', 'Division information updated successfully');
             } else {
                 UserLogs::logAction($request, 'ATTEMPT UPDATE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
 
-                return redirect()->route('div.update', $id)
+                return redirect()->route('div.update', $encryptedId)
                     ->with('error', 'Division information update failed');
             }
         } 
@@ -99,8 +99,10 @@ class DivisionController extends Controller
         return view('pages.division.update', compact('title', 'data'));
     }
 
-    public function restore(Request $request, $id)
+    public function restore(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         $data = Division::withTrashed()->find($id);
     
         if ($data) {
@@ -116,8 +118,10 @@ class DivisionController extends Controller
         }
     }    
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         $data = Division::find($id);
 
         if ($data) {
@@ -131,6 +135,25 @@ class DivisionController extends Controller
 
             return redirect()->route('div.index')
                 ->with('error', 'Division not found');
+        }
+    }
+
+    public function permanentDelete(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $data = Division::withTrashed()->find($id);
+
+        if ($data) {
+            if ($data->trashed()) {
+                $data->forceDelete();
+                UserLogs::logAction($request, 'ATTEMPT PERMANENT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('div.index')->with('success', 'Division permanently deleted successfully');
+            } else {
+                return redirect()->route('div.index')->with('error', 'Division is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('div.index')->with('error', 'Division not found');
         }
     }
 }

@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" method="POST" action="{{ route('cat.update', $data->id) }}">
+        <form class="form-wrapper" method="POST" action="{{ route('cat.update', encrypt($data->id)) }}">
             @csrf
             @method('POST')
 
@@ -18,7 +18,7 @@
                 @enderror
             </div>
         
-            <button type="submit">Tambah Kategori</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 </div>

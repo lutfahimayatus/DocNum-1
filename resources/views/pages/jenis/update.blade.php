@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" method="POST" action="{{ route('jenis.update', $data[0]->id) }}">
+        <form class="form-wrapper" method="POST" action="{{ route('jenis.update', encrypt($data[0]->id)) }}">
             @csrf
             @method('POST')
 
@@ -45,7 +45,7 @@
                 @enderror
             </div>
         
-            <button type="submit">Add Jenis</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 </div>

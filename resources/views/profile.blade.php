@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="main">
-        <form class="form-wrapper" action="{{ route('profile', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
+        <form class="form-wrapper" action="{{ route('profile', encrypt(Auth::user()->id)) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="profile-wrapper">

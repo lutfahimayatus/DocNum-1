@@ -2,7 +2,7 @@
     <div class="navbar">
         <div class="navbar-container">
             <div class="title">
-                <h2>{{ $title }}</h2>
+                <h4>{{ $title }}</h4>
             </div>
             <div class="profile"> 
                 <a href="{{ route('profile', encrypt(Auth::user()->id) )}}"> 

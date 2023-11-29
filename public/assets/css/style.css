@@ -147,12 +147,11 @@ a {
     line-height: 50px;
 }
 
-.sidebar .logo-details img {
-    width: 175px; /* Adjust the width to your desired size */
-    height: auto; /* This maintains the aspect ratio */
+.sidebar .logo-details .logo {
+    width: 175px; 
+    height: auto;
     display: block;
-    margin: 0 auto; /* Center the image horizontally */
-    padding: 0; /* Remove padding */
+    margin: 25px;  
 }
 
 .input-group {
@@ -437,7 +436,7 @@ a {
 
 .profile p {
     color: #fff;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 550;
     padding-right: 10px;
 }
@@ -669,7 +668,21 @@ a {
     border-radius: 10px;
     color: white;
     background-color: #B42021;
-    border: none; /* Remove the default button border */
+    border: none;
+}
+
+.badge.badge-primary {
+    background-color: rgb(27, 118, 221);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.badge.badge-warning {
+    background-color: rgb(220, 181, 53);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 .badge.badge-danger {
@@ -679,7 +692,7 @@ a {
     border-radius: 5px;
 }
 
-/* Style for the "Active" badge */
+
 .badge.badge-success {
     background-color: #28a745;
     color: white;
@@ -695,13 +708,13 @@ a {
     color: white;
     justify-content: center;
     background-color: #B42021;
-    border: none; /* Remove the default button border */
+    border: none; 
 }
 
 .content .main .form-wrapper a .text {
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     width: 100%;
     height: 100%;
 }
@@ -712,7 +725,7 @@ button {
     border-radius: 10px;
     color: white;
     background-color: #B42021;
-    border: none; /* Remove the default button border */
+    border: none; 
 }
 
 hr {
@@ -841,31 +854,29 @@ hr {
     width: 100%;
 }
 
-/* Style the table header (thead) */
 .styled-table th {
     color: #fff;
     margin-top: 10px;
-    background-color: #B42021; /* Background color for header cells */
-    border: 1px solid #dddddd; /* Add a border to header cells */
+    background-color: #B42021;
+    border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+    font-size: 14px; 
 }
 
-/* Style the table body (tbody) */
 .styled-table td {
     color: #fff;
     background-color: #b4202080;
-    border: 1px solid #dddddd; /* Add a border to body cells */
+    border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+    font-size: 12px; 
 }
 
-/* Apply some additional styling for even and odd rows (optional) */
 .styled-table tr:nth-child(even) {
-    background-color: #f2f2f2; /* Background color for even rows */
+    background-color: #f2f2f2;
 }
 
-/* Custom CSS for Pagination Links */
 .pagination {
     display: flex;
     justify-content: center;
@@ -906,20 +917,21 @@ hr {
 
 .content .img-main img,
 .close .content .main img {
-    max-width: 75%; /* Ensure the image scales proportionally */
-    height: auto;    /* Allow the image to maintain its aspect ratio */
+    max-width: 75%; 
+    height: auto; 
     margin: 50px;
     position: relative;
     transition: all 0.5s ease;
 }
 
-/* Media query for screens with a width of 1360 pixels or less */
-@media (max-width: 1360px) {
+/**
+@media (max-width: 1200px) {
     .content .img-main img,
     .close .content .main img {
-        max-width: 50%; /* Adjust the maximum width for smaller screens */
+        max-width: 50%;
     }
 }
+**/
 
 .home-section .card-container {
     background: #fff;
@@ -930,7 +942,7 @@ hr {
     flex-direction: column;
     border-radius: 10px;
     transition: all 0.5s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .home-section .content .main .text-main h1 {
@@ -984,17 +996,23 @@ hr {
 }
 
 .home-section .card-container .card-content .card-info .judul{
+    font-size: medium;
     text-align: center;
     font-weight: 550;
 }
 
 .home-section .card-container .card-content .card-info .angka {
-    font-size: xx-large;
+    font-size: large;
     min-height: 68px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.home-section .card-container .card-content img {
+    width: 40px;
+    height: 40px;
 }
 
 p {
@@ -1076,7 +1094,6 @@ p {
     margin-left: 50px;
     margin-right: 50px;
     display: flex;
-    width: 50%;
 }
 
 .user .user-text {

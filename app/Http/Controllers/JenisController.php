@@ -107,8 +107,10 @@ class JenisController extends Controller
         return view('pages.jenis.update', compact('data', 'title', 'categories'));
     }
 
-    public function restore(Request $request, $id)
+    public function restore(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
         $data = Jenis::withTrashed()->find($id);
     
         if ($data) {
@@ -124,8 +126,10 @@ class JenisController extends Controller
         }
     }    
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $encryptedId)
     {
+        $id = $this->decryptIfEncrypted($encryptedId);
+        
         $data = Jenis::find($id);
 
         if ($data) {

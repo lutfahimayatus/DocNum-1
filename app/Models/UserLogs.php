@@ -33,6 +33,6 @@ class UserLogs extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'users');
+        return $this->belongsTo(User::class, 'users', 'id');
     }
 }

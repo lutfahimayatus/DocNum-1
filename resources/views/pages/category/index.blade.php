@@ -29,8 +29,8 @@
                             </td>
                             <td>
                                 <a href="{{ route('cat.update', encrypt($cat->id)) }}" class="table-button-primary">Edit</a>
-                                <a href="{{ route('cat.delete', $cat->id) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
-                                <a href="{{ route('cat.restore', $cat->id) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
+                                <a href="{{ route('cat.delete', encrypt($cat->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="{{ route('cat.restore', encrypt($cat->id)) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>
                         </tr>
                     @endforeach

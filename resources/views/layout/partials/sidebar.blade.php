@@ -4,7 +4,9 @@
             <a href="#">
                 <i class='bx bx-menu' ></i>
             </a>
-            <img src="{{ asset('assets/img/logo.png')}}" alt="" class="logo-name">
+            <a class="logo" href="{{route('dashboard')}}">
+                <img src="{{ asset('assets/img/logo.png')}}" alt="" class="logo-name">
+            </a>
         </div>
         <ul class="nav-links">
             <li @if (Route::currentRouteName() == 'dashboard') class="active" @endif>
@@ -16,7 +18,7 @@
                 </a>
             </li>
             @if (Auth::user()->role == 'administrator')
-            <li @if (Route::currentRouteName() == 'user.index' || Route::currentRouteName() == 'cat.index' || Route::currentRouteName() == 'jenis.index') class="active" @endif>
+            <li @if (Route::currentRouteName() == 'div.index' || Route::currentRouteName() == 'user.index' || Route::currentRouteName() == 'cat.index' || Route::currentRouteName() == 'jenis.index') class="active" @endif>
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-file'></i>
