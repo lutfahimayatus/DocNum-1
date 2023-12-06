@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -24,7 +25,16 @@ class AuthController extends Controller
                 $rules = [
                     'nip' => 'required|unique:users',
                     'role' => 'required|string',
-                    'password' => 'required|min:8|confirmed',
+                    'password' => [
+                        'required',
+                        'confirmed',
+                        Password::min(8)
+                            ->letters()
+                            ->mixedCase()
+                            ->numbers()
+                            ->symbols()
+                            ->uncompromised()
+                    ]
                 ];
 
                 $messages = [
@@ -109,11 +119,26 @@ class AuthController extends Controller
                 
 
                 if (Auth::attempt(['nip' => $request->input('nip'), 'password' => $request->input('password')])) {
+                    $startTime = microtime(true);
+
                     RateLimiter::clear('/login');
                     RateLimiter::clear('/login_password');
                     
+                    $endTime = microtime(true);
+                    $executionTime = ($endTime - $startTime);
+    
+                    if ($executionTime >= 1) {
+                        $executionTime = round($executionTime, 2); 
+                        $timeUnit = ' seconds';
+                    } else {
+                        $executionTime = round($executionTime * 1000, 1); 
+                        $timeUnit = ' milliseconds';
+                    }
+
                     UserLogs::logAction($request, 'ATTEMPT LOGIN USER', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
-                    return redirect('/dashboard')->with('success', 'Login berhasil!');
+                    
+                    $successMessage = 'Login berhasil! Waktu eksekusi: ' . $executionTime . $timeUnit;
+                    return redirect('/dashboard')->with('success', $successMessage);
                 } else {
                     RateLimiter::hit('/login_password');
                     UserLogs::logAction($request, 'ATTEMPT LOGIN USER', '0', '', '{"isStatus": false, "pesan": "Gagal"}');

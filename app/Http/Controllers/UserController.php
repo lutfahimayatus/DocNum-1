@@ -8,6 +8,7 @@ use App\Models\UserLogs;
 use App\Models\Division;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -22,10 +23,10 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::withTrashed()->where('id', '!=', Auth::user()->id)->get();
+        $data = User::withTrashed()->where('id', '!=', Auth::user()->id)->get();
         $title = 'Data Users';
         UserLogs::logAction($request, 'Menu Access', Auth::user()->id, 'DataUser', '');
-        return view('pages.users.index', compact('users', 'title'));
+        return view('pages.users.index', compact('data', 'title'));
     }
 
     public function store(Request $request)
@@ -38,7 +39,16 @@ class UserController extends Controller
                 'role' => 'required',
                 'divisi_id' => 'required',
                 'email' => 'required|string|unique:users,email',
-                'password' => 'required|min:8|confirmed',
+                'password' => [
+                    'required',
+                    'confirmed'],
+                    Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+                ,
             ];
 
             $messages = [

@@ -96,6 +96,8 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::controller(DocumentController::class)->group(function () {
                 Route::get('/document', 'index')->name('document.index');
+                Route::get('/document/delete/{id}', 'delete')->name('document.delete');
+                Route::get('/document/permanent-delete/{id}', 'permanentDelete')->name('document.permanent.delete');
                 Route::get('/documents/searchs', 'search')->name('searchs.documents');
                 Route::get('/document/detail/{id}', 'detailDocument')->name('document.detail');
                 Route::match(['get', 'post'], '/document/{id}/update', 'updateDocument')->name('document.update');

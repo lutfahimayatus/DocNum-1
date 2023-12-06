@@ -26,7 +26,7 @@ class DocumentController extends Controller
 
     public function index(Request $request)
     {
-        $data = Auth::user()->role === 'administrator' ? Document::with('jenis', 'user')->get() : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
+        $data = Auth::user()->role === 'administrator' ? Document::with('jenis', 'user')->withTrashed()->get() : Document::orderBy('created_at', 'desc')->where('users', Auth::user()->nip)->paginate(5);
         $title = 'Data Dokumen';
         $totalDoc = Document::count();
         $totalDocNotConfirmed = Document::where('status', '!=' ,'selesai')->count();
@@ -62,9 +62,10 @@ class DocumentController extends Controller
 
         $data = $query->paginate($showEntries);
 
+        $totalDocNotConfirmed = Document::where('status', '!=' ,'selesai')->count();
         $totalDoc = Document::count();
         $title = 'Data Dokumen';
-        return view('pages.document.index', compact('totalDoc', 'title', 'data', 'jenis', 'showEntries'));
+        return view('pages.document.index', compact('totalDocNotConfirmed' ,'totalDoc', 'title', 'data', 'jenis', 'showEntries'));
     }
 
     public function generateDocument(Request $request)
@@ -85,6 +86,10 @@ class DocumentController extends Controller
             $jenisDokumen = Jenis::where('id', $request->input('jenis'))->first();
             if (!$jenisDokumen) {
                 return back()->withInput()->with('error', 'Jenis dokumen tidak ditemukan');
+            }
+
+            if (Auth::user()->divisi_id == '0') {
+                return back()->withInput()->with('error', 'Anda belum memiliki divisi! silahkan update profile anda untuk melanjutkan operasi ini.');
             }
 
             $kode = $this->generateDocumentNumber($jenisDokumen);
@@ -329,6 +334,45 @@ class DocumentController extends Controller
             return Excel::download(new DocumentsExport($documents), $startDate . '-' . $endDate . '.xlsx');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function delete(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $data = Document::find($id);
+
+        if ($data) {
+            $data->delete();
+            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+
+            return redirect()->route('document.index')
+                ->with('success', 'Document deleted successfully');
+        } else {
+            UserLogs::logAction($request, 'ATTEMPT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": false, "pesan": "Gagal"}');
+
+            return redirect()->route('document.index')
+                ->with('error', 'Document not found');
+        }
+    }
+
+    public function permanentDelete(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $data = Document::withTrashed()->find($id);
+
+        if ($data) {
+            if ($data->trashed()) {
+                $data->forceDelete();
+                UserLogs::logAction($request, 'ATTEMPT PERMANENT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('document.index')->with('success', 'Document permanently deleted successfully');
+            } else {
+                return redirect()->route('document.index')->with('error', 'Document is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('document.index')->with('error', 'Document not found');
         }
     }
 }

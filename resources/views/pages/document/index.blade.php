@@ -37,38 +37,31 @@
     <div class="main">
         @if(Auth::user()->role === 'administrator')
         <div class="table-responsive">
-            <form action="{{ route('document.download.all')}}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" name="daterange" id="daterange" class="input" autocomplete="off" />
+            <div style="display: flex; justify-content: space-between">
+                <form action="{{ Auth::user()->role === 'administrator' ? route('searchs.documents') : route('search.documents') }}" method="GET">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="input" type="text" name="search" placeholder="Cari {{ Auth::user()->role === 'administrator' ? 'Dokumen/NIP' : 'Dokumen'}}">
+                        </div>
+                        <div class="input-group">
+                            <button type="submit">Search</button>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <button class="input" type="submit">
-                            Download
-                        </button>
+                </form>
+                <form action="{{ route('document.download.all')}}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="daterange" id="daterange" class="input" autocomplete="off" />
+                        </div>
+                        <div class="input-group">
+                            <button class="input" type="submit">
+                                Download
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <form action="{{ Auth::user()->role === 'administrator' ? route('searchs.documents') : route('search.documents') }}" method="GET">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input class="input" type="text" name="search" placeholder="Cari {{ Auth::user()->role === 'administrator' ? 'Dokumen/NIP' : 'Dokumen'}}">
-                    </div>
-                    <div class="input-group">
-                        <select class="input" name="jenis">
-                            <option value="" selected>Select Jenis</option>
-                            @foreach ($jenis as $jenisOption)
-                                <option value="{{ $jenisOption->id }}">{{ $jenisOption->jenis }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <button type="submit">Search</button>
-                    </div>
-                </div>
-            </form>
-
+                </form>
+            </div>
             <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
@@ -106,6 +99,12 @@
                             </td>                            
                             <td>
                                 <a href="{{ route('document.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
+                                @if(!$dt->deleted_at)
+                                <a href="{{ route('document.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
+                                @endif
+                                @if($dt->deleted_at)
+                                    <a href="{{ route('document.permanent.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Permanent Delete</a>
+                                @endif
                                 <a href="{{ route('document.download.single', $dt->id) }}" class="table-button-primary">Download</a>
                             </td>
                         </tr>
@@ -135,14 +134,6 @@
                 <div class="form-group">
                     <div class="input-group">
                         <input class="input" type="text" name="search" placeholder="Cari {{ Auth::user()->role === 'administrator' ? 'Dokumen/NIP' : 'Dokumen'}}">
-                    </div>
-                    <div class="input-group">
-                        <select class="input" name="jenis">
-                            <option value="" selected>Select Jenis</option>
-                            @foreach ($jenis as $jenisOption)
-                                <option value="{{ $jenisOption->id }}">{{ $jenisOption->jenis }}</option>
-                            @endforeach
-                        </select>
                     </div>
                     <div class="input-group">
                         <select name="show_entries" class="input">

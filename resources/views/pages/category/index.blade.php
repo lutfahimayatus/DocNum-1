@@ -11,8 +11,8 @@
                     <tr>
                         <th>No</th>
                         <th>Kategori</th>
-                        <th>Opsi</th>
                         <th>Status</th>
+                        <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
