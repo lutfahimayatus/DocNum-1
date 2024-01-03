@@ -23,11 +23,12 @@ class AuthController extends Controller
         try {
             if ($request->isMethod('post')) {
                 $rules = [
-                    'nip' => 'required|unique:users',
+                    'nip' => 'required|unique:users|numeric',
                     'role' => 'required|string',
                     'password' => [
                         'required',
                         'confirmed',
+                        'string',
                         Password::min(8)
                             ->letters()
                             ->mixedCase()
@@ -86,8 +87,8 @@ class AuthController extends Controller
         try {
             if ($request->isMethod('post')) {
                 $rules = [
-                    'nip' => 'required',
-                    'password' => 'required',
+                    'nip' => 'required|numeric',
+                    'password' => 'required|string',
                 ];
 
                 $messages = [

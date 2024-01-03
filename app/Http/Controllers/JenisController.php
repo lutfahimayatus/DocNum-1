@@ -145,4 +145,23 @@ class JenisController extends Controller
                 ->with('error', 'Jenis not found');
         }
     }
+
+    public function permanentDelete(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $data = Jenis::withTrashed()->find($id);
+
+        if ($data) {
+            if ($data->trashed()) {
+                $data->forceDelete();
+                UserLogs::logAction($request, 'ATTEMPT PERMANENT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('jenis.index')->with('success', 'Jenis permanently deleted successfully');
+            } else {
+                return redirect()->route('jenis.index')->with('error', 'Jenis is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('jenis.index')->with('error', 'Jenis not found');
+        }
+    }
 }

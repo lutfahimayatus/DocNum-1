@@ -91,14 +91,26 @@
                     </a>
                     <ul class="sub-menu">
                         <li @if (Route::currentRouteName() == 'profile') class="active" @endif>
-                            <a class="link_name" href="{{ route('profile', encrypt(Auth::user()->id)) }}">Edit Profil</a></li>
+                            <a class="link_name" href="{{ route('profile', encrypt(Auth::user()->id)) }}">Edit Profil</a>
+                        </li>
                         <li @if (Route::currentRouteName() == 'profile.change.password') class="active" @endif>
-                            <a class="link_name" href="{{ route('profile.change.password', encrypt(Auth::user()->id)) }}">Ganti Kata Sandi</a></li>
+                            <a class="link_name" href="{{ route('profile.change.password', encrypt(Auth::user()->id)) }}">Ganti Kata Sandi</a>
+                        </li>
                         <li>
-                            <a class="link_name" href="{{ route('logout') }}">Keluar</a></li>
+                            <a class="link_name" href="{{ route('logout') }}" onclick="event.preventDefault(); showLogoutConfirmation()">Keluar</a>
+                        </li>
                     </ul>
                 </div>
             </li>
         </ul>
     </section>
 </div>
+
+<script>
+    function showLogoutConfirmation() {
+        var isConfirmed = confirm("Apakah Anda yakin ingin keluar?");
+        if (isConfirmed) {
+            window.location.href = "{{ route('logout') }}";
+        }
+    }
+</script>

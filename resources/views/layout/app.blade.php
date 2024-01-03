@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -30,18 +31,21 @@
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable();
+            $('#select2').select2({
+                placeholder: 'Pilih User'
+            });
         } );
 
         $(function() {
-        // Initialize the date range picker
-        $('#daterange').daterangepicker({
-            opens: 'left', // Adjust the position of the date picker
-            locale: {
-                format: 'YYYY-MM-DD', // Adjust the date format as needed
-            }
+            $('#daterange').daterangepicker({
+                opens: 'left',
+                locale: {
+                    format: 'YYYY-MM-DD',
+                }
+            });
         });
-    });
     </script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 </html>

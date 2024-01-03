@@ -5,6 +5,27 @@
 <div class="content">
     <div class="main">
         <div class="table-responsive">
+            <form action="{{ route('log.download.all')}}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <div class="input-group">
+                        <select id="select2" class="input" name="users">
+                            <option></option>
+                            @foreach($users as $data)
+                            <option value="{{ $data->id }}">{{ $data->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="daterange" id="daterange" class="input" autocomplete="off" />
+                    </div>
+                    <div class="input-group">
+                        <button class="input" type="submit">
+                            Download
+                        </button>
+                    </div>
+                </div>
+            </form>
             <table id="myTable" class="styled-table">
                 <thead>
                     <tr>

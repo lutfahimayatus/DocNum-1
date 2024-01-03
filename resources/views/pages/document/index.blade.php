@@ -102,9 +102,6 @@
                                 @if(!$dt->deleted_at)
                                 <a href="{{ route('document.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
                                 @endif
-                                @if($dt->deleted_at)
-                                    <a href="{{ route('document.permanent.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Permanent Delete</a>
-                                @endif
                                 <a href="{{ route('document.download.single', $dt->id) }}" class="table-button-primary">Download</a>
                             </td>
                         </tr>
@@ -194,7 +191,7 @@
                     <hr>
                     <div class="content-document">
                         <div>
-                            <p>Nomor Dokumen: <span>{{ $dokumen->document_number}}</span></p>
+                            <p>Nomor Dokumen: <span id="document_number">{{ $dokumen->document_number}}</span><i class="fa-regular fa-copy" onclick="copyToClipboardElementP('document_number')"></i></p>
                             <p>Jenis        : <span>{{ $dokumen->jenis->jenis }}</span></p>
                         </div>
                         <div>

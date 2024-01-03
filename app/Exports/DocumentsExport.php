@@ -29,6 +29,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             'Nama Dokumen',
             'User Log',
             'Tgl Generate',
+            'Status'
         ];
     }
 
@@ -41,6 +42,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             $document->document,
             $document->user->nip . ' - ' . $document->user->name,
             $document->created_at,
+            $document->status
         ];
     }
 }

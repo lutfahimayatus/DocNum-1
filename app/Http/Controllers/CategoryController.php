@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Categories;
 use App\Models\UserLogs;
+use App\Models\Jenis;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
@@ -131,5 +132,32 @@ class CategoryController extends Controller
             return redirect()->route('cat.index')
                 ->with('error', 'Category not found');
         }
+    }
+
+    public function permanentDelete(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $category = Categories::withTrashed()->find($id);
+
+        if (!$category) {
+            return redirect()->route('cat.index')->with('error', 'Category not found');
+        }
+
+        if (!$category->trashed()) {
+            return redirect()->route('cat.index')->with('error', 'Category is not soft-deleted');
+        }
+
+        $relatedJenisCount = Jenis::where('category_id', $category->id)->count();
+
+        if ($relatedJenisCount > 0) {
+            return redirect()->route('cat.index')->with('error', 'Cannot permanently delete category. It has related records in Jenis.');
+        }
+
+        $category->forceDelete();
+
+        UserLogs::logAction($request, 'ATTEMPT PERMANENT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+
+        return redirect()->route('cat.index')->with('success', 'Category permanently deleted successfully');
     }
 }

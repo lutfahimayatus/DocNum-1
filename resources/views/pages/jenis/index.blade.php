@@ -23,17 +23,19 @@
                             <td>{{ $index + 1}}</td>
                             <td>{{ $dt->kode }}</td>
                             <td>{{ $dt->jenis }}</td>
-                            <td>{{ $dt->category->desc }}</td>
+                            <td>{{ $dt->category->desc ?? '' }}</td>
                             <td>
                                 @if($dt->deleted_at)
-                                    <span class="badge badge-danger">Inactive</span>
+                                    <span class="badge badge-danger">Disable</span>
                                 @else
-                                    <span class="badge badge-success">Active</span>
+                                    <span class="badge badge-success">Enable</span>
                                 @endif
                             </td>
                             <td>
                                 <a href="{{ route('jenis.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
-                                <a href="{{ route('jenis.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                @if(!$dt->deleted_at)
+                                <a href="{{ route('jenis.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
+                                @endif
                                 <a href="{{ route('jenis.restore', encrypt($dt->id)) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>
                         </tr>

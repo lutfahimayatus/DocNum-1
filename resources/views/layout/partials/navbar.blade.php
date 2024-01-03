@@ -1,9 +1,7 @@
 <div class="hero">
     <div class="navbar">
         <div class="navbar-container">
-            <div class="title">
-                <h4>{{ $title }}</h4>
-            </div>
+                {{ Breadcrumbs::render() }}
             <div class="profile"> 
                 <a href="{{ route('profile', encrypt(Auth::user()->id) )}}"> 
                     <p>{{ Auth::user()->name }}</p>

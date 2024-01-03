@@ -80,10 +80,31 @@ function copyToClipboard(inputId) {
     document.execCommand("copy");
     inputField.setSelectionRange(0, 0);
 
+    console.log(inputField)
     var copySuccessMessage = document.getElementById("copy-success-message");
     copySuccessMessage.style.display = "block";
 
-    setTimeout(function() {
-        copySuccessMessage.style.display = "none";
-    }, 2000);
+    setTimeout(function () {
+        copySuccessMessage.classList.add("fade-out");
+    }, 3000);
 }
+
+function copyToClipboardElementP(elementId) {
+    var copyText = document.getElementById(elementId);
+    var range = document.createRange();
+    range.selectNode(copyText);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+    alert("Copied to clipboard: " + copyText.textContent);
+}
+
+document.querySelectorAll(".alert").forEach(function (element) {
+    setTimeout(function () {
+        element.classList.add("fade-out");
+        setTimeout(function () {
+            element.style.display = "none";
+        }, 500);
+    }, 3000);
+});

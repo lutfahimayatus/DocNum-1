@@ -17,21 +17,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @foreach ($data as $user)
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->nip }}</td>
                             <td>{{ $user->role }}</td>
                             <td>
                                 @if($user->deleted_at)
-                                    <span class="badge badge-danger">Inactive</span>
+                                    <span class="badge badge-danger">Disable</span>
                                 @else
-                                    <span class="badge badge-success">Active</span>
+                                    <span class="badge badge-success">Enable</span>
                                 @endif
                             </td>
                             <td>
                                 <a href="{{ route('user.update', encrypt($user->id)) }}" class="table-button-primary">Edit</a>
-                                <a href="{{ route('user.delete', encrypt($user->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                @if(!$user->deleted_at)
+                                <a href="{{ route('user.delete', encrypt($user->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
+                                @endif
                                 <a href="{{ route('user.restore', encrypt($user->id)) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>
                         </tr>

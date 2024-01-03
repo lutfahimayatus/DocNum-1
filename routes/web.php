@@ -57,17 +57,20 @@ Route::middleware(['auth'])->group(function () {
             Route::controller(UserController::class)->group(function () {
                 Route::get('/user', 'index')->name('user.index');
                 Route::get('/user/{id}/delete', 'delete')->name('user.delete');
+                Route::get('/user/{id}/permanent-delete', 'permanentDelete')->name('user.permanent.delete');
                 Route::get('/user/{id}/restore', 'restore')->name('user.restore');
                 Route::match(['get', 'post'], '/user/create', 'store')->name('user.create');
                 Route::match(['get', 'post'], '/user/{id}/update', 'update')->name('user.update');
             });
             Route::controller(UserLogController::class)->group(function () {
                 Route::get('/user/log', 'index')->name('log.index');
+                Route::post('/user/log/download', 'downloadLog')->name('log.download.all');
                 //in case want to add Create, Update, Delete
             });
             Route::controller(CategoryController::class)->group(function () {
                 Route::get('/category', 'index')->name('cat.index');
                 Route::get('/category/{id}/delete', 'delete')->name('cat.delete');
+                Route::get('/category/{id}/permanent-delete', 'permanentDelete')->name('cat.permanent.delete');
                 Route::get('/category/{id}/restore', 'restore')->name('cat.restore');
                 Route::match(['get', 'post'], '/category/create', 'store')->name('cat.create');
                 Route::match(['get', 'post'], '/category/{id}/update', 'update')->name('cat.update');
@@ -83,16 +86,10 @@ Route::middleware(['auth'])->group(function () {
             Route::controller(JenisController::class)->group(function () {
                 Route::get('/jenis', 'index')->name('jenis.index');
                 Route::get('/jenis/{id}/delete', 'delete')->name('jenis.delete');
+                Route::get('/jenis/{id}/permanent-delete', 'permanentDelete')->name('jenis.permanent.delete');
                 Route::get('/jenis/{id}/restore', 'restore')->name('jenis.restore');
                 Route::match(['get', 'post'], '/jenis/create', 'store')->name('jenis.create');
                 Route::match(['get', 'post'], '/jenis/{id}/update', 'update')->name('jenis.update');
-            });
-            Route::controller(NIPController::class)->group(function () {
-                Route::get('/nip', 'index')->name('nip.index');
-                Route::get('/nip/{id}/delete', 'delete')->name('nip.delete');
-                Route::match(['get', 'post'], '/nip/create', 'store')->name('nip.create');
-                Route::match(['get', 'post'], '/nip/{id}/update', 'update')->name('nip.update');
-                Route::post('/nip/csv', 'csv')->name('nip.csv');
             });
             Route::controller(DocumentController::class)->group(function () {
                 Route::get('/document', 'index')->name('document.index');

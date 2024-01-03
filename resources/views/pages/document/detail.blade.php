@@ -17,7 +17,7 @@
                     <input class="input" type="text" id="document_number" value="{{ $data[0]->document_number }}" readonly>
                     <i class="fa-regular fa-copy" onclick="copyToClipboard('document_number')"></i>
                 </div>    
-                <div id="copy-success-message" class="alert alert-success" style="display: none; margin-top: 5px;">
+                <div id="copy-success-message" class="alert alert-success" style="display: none; margin-top: 5px; border-radius: 10px;">
                     Nomor Dokumen Berhasil Disalin
                 </div>            
             </div>

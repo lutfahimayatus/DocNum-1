@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\Division;
+use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -192,4 +193,31 @@ class UserController extends Controller
             return redirect()->route('user.index')->with('error', 'User not found');
         }
     }   
+
+    public function permanentDelete(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $user = User::withTrashed()->find($id);
+
+        if (!$user) {
+            return redirect()->route('user.index')->with('error', 'User not found');
+        }
+
+        if (!$user->trashed()) {
+            return redirect()->route('user.index')->with('error', 'User is not soft-deleted');
+        }
+
+        $relatedDocumentCount = Document::where('users', $user->nip)->count();
+
+        if ($relatedDocumentCount > 0) {
+            return redirect()->route('user.index')->with('error', 'Cannot permanently delete user. It has related records in Jenis.');
+        }
+
+        $user->forceDelete();
+
+        UserLogs::logAction($request, 'ATTEMPT PERMANENT DELETE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+
+        return redirect()->route('user.index')->with('success', 'User permanently deleted successfully');
+    }
 }
