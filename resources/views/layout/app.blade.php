@@ -13,15 +13,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    
-    @include('layout.partials.sidebar')
 
     <section class="home-section">
-
-        @include('layout.partials.navbar')
-
-        @yield('content')
-        
+        @include('layout.partials.sidebar')
+        <div style="width: 100%">
+            @include('layout.partials.navbar')
+            @yield('content')  
+        </div> 
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>

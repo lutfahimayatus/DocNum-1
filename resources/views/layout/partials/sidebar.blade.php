@@ -1,14 +1,13 @@
-<div class="scrollable-sidebar" style="max-height: 80vh; overflow-y: auto;">
-    <section class="sidebar">
-        <div class="logo-details">
-            <a href="#">
-                <i class='bx bx-menu' ></i>
-            </a>
-            <a class="logo" href="{{route('dashboard')}}">
-                <img src="{{ asset('assets/img/logo.png')}}" alt="" class="logo-name">
-            </a>
-        </div>
+    <section class="sidebar" id="sidebar">
         <ul class="nav-links">
+            <div class="logo-details">
+                <a href="#" id="menuButton">
+                    <i class='bx bx-menu' ></i>
+                </a>
+                <a class="logo" href="{{route('dashboard')}}">
+                    <img src="{{ asset('assets/img/logo.png')}}" alt="" class="logo-name">
+                </a>
+            </div>
             <li @if (Route::currentRouteName() == 'dashboard') class="active" @endif>
                 <a href="{{ route('dashboard')}}">
                     <i class='bx bxs-home' ></i>
@@ -24,7 +23,7 @@
                         <i class='bx bxs-file'></i>
                         <div class="item-container"> 
                             <span class="link_name">Data Master</span>
-                            <i class='bx bx-chevron-down arrow'></i>
+                            <i class='bx bx-chevron-right arrow'></i>
                         </div>
                     </a>
                     <ul class="sub-menu">
@@ -66,7 +65,7 @@
                         <i class='bx bxs-file'></i>
                         <div class="item-container"> 
                             <span class="link_name">Dokumen</span>
-                            <i class='bx bx-chevron-down arrow'></i>
+                            <i class='bx bx-chevron-right arrow'></i>
                         </div>
                     </a>
                     <ul class="sub-menu">
@@ -86,7 +85,7 @@
                         <i class='bx bx-cog' ></i>
                         <div class="item-container"> 
                             <span class="link_name">Pengaturan</span>
-                            <i class='bx bx-chevron-down arrow'></i>
+                            <i class='bx bx-chevron-right arrow'></i>
                         </div>
                     </a>
                     <ul class="sub-menu">
@@ -104,7 +103,6 @@
             </li>
         </ul>
     </section>
-</div>
 
 <script>
     function showLogoutConfirmation() {
@@ -113,4 +111,36 @@
             window.location.href = "{{ route('logout') }}";
         }
     }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuButton = document.getElementById('menuButton');
+            var body = document.body;
+
+            menuButton.addEventListener('click', function() {
+                body.classList.toggle('sidebar-shrink');
+            });
+
+            document.addEventListener('click', function(event) {
+                var targetElement = event.target;
+
+                if (!targetElement.closest('.icon-link')) {
+                    // Menyembunyikan submenu jika yang diklik bukan bagian dari .icon-link
+                    hideSubmenu();
+                }
+            });
+
+            var iconLinks = document.querySelectorAll('.icon-link');
+            iconLinks.forEach(function(iconLink) {
+                iconLink.addEventListener('click', function() {
+                    hideSubmenu(); // Menyembunyikan submenu yang mungkin sedang terbuka
+                    this.classList.toggle('submenu-open');
+                });
+            });
+
+            function hideSubmenu() {
+                iconLinks.forEach(function(iconLink) {
+                    iconLink.classList.remove('submenu-open');
+                });
+            }
+        });
 </script>

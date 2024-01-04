@@ -172,7 +172,8 @@ class DocumentController extends Controller
                 $oldFileName = $data->file;
     
                 $file = $request->file('file_document');
-                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = $originalFileName;
                 $file->move(public_path('files'), $fileName);
                 $data->file = $fileName;
                 $data->status = 'sudah_upload';
@@ -239,6 +240,7 @@ class DocumentController extends Controller
     public function uploadDocument(Request $request, $encryptedId)
     {
         $id = $this->decryptIfEncrypted($encryptedId);
+
         if ($request->isMethod('POST')) {
             $rules = [
                 'file_document' => 'required|mimes:pdf|max:2048',
@@ -250,13 +252,14 @@ class DocumentController extends Controller
 
             if ($request->hasFile('file_document')) {
                 $oldFileName = $data->file;
-    
+
                 $file = $request->file('file_document');
-                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = $originalFileName;
                 $file->move(public_path('files'), $fileName);
                 $data->file = $fileName;
                 $data->status = 'sudah_upload';
-                
+
                 if ($oldFileName) {
                     $oldFilePath = public_path('files') . '/' . $oldFileName;
                     if (file_exists($oldFilePath)) {
@@ -375,4 +378,24 @@ class DocumentController extends Controller
             return redirect()->route('document.index')->with('error', 'Document not found');
         }
     }
+
+    public function restore(Request $request, $encryptedId)
+    {
+        $id = $this->decryptIfEncrypted($encryptedId);
+
+        $document = Document::withTrashed()->find($id);
+    
+        if ($document) {
+            if ($document->trashed()) {
+                $document->restore();
+                UserLogs::logAction($request, 'ATTEMPT RESTORE OPERATION', Auth::user()->id, '', '{"isStatus": true, "pesan": "Sukses"}');
+                return redirect()->route('document.index')->with('success', 'Document restored successfully');
+            } else {
+                return redirect()->route('document.index')->with('error', 'Document is not soft-deleted');
+            }
+        } else {
+            return redirect()->route('document.index')->with('error', 'Document not found');
+        }
+    }    
+
 }

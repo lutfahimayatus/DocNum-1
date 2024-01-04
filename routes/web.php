@@ -97,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/document/permanent-delete/{id}', 'permanentDelete')->name('document.permanent.delete');
                 Route::get('/documents/searchs', 'search')->name('searchs.documents');
                 Route::get('/document/detail/{id}', 'detailDocument')->name('document.detail');
+                Route::get('/document/{id}/restore', 'restore')->name('document.restore');
                 Route::match(['get', 'post'], '/document/{id}/update', 'updateDocument')->name('document.update');
                 Route::get('/document/download/single/{id}', 'downloadDocument')->name('document.download.single');
                 Route::post('/document/download/all', 'downloadAllDocuments')->name('document.download.all');

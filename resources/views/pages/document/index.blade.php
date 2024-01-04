@@ -98,9 +98,11 @@
                                 @endif
                             </td>                            
                             <td>
-                                <a href="{{ route('document.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
                                 @if(!$dt->deleted_at)
+                                <a href="{{ route('document.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('document.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
+                                @elseif($dt->deleted_at)
+                                <a href="{{ route('document.restore', encrypt($dt->id)) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                                 @endif
                                 <a href="{{ route('document.download.single', $dt->id) }}" class="table-button-primary">Download</a>
                             </td>
@@ -163,21 +165,11 @@
                         </a>
                     </div>
                     <div id="menu-{{ $dokumen->id }}" class="menu" style="display: none;">
-                        @if (Auth::user()->role === 'administrator')
-                        <a class="item-option" href="{{ route('document.download.single', $dokumen->id)}}">
-                            <i class="bx bx-download"></i>
-                            Download 
-                        </a>
-                        <a class="item-option" href="{{ route('document.update', encrypt($dokumen->id))}}">
-                            <i class="bx bx-edit-alt"></i>
-                            Edit
-                        </a>
-                        @endif
-                        @if (Auth::user()->role === 'employee')
                         <a class="item-option" href="{{ route('employee.download', $dokumen->id)}}">
                             <i class="bx bx-download"></i>
                             Download 
                         </a>
+                        @if(!$dokumen->deleted_at)
                         <a class="item-option" href="{{ route('employee.upload', encrypt($dokumen->id))}}">
                             <i class="bx bx-upload"></i>
                             Upload 

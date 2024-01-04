@@ -12,7 +12,7 @@
                         <select id="select2" class="input" name="users">
                             <option></option>
                             @foreach($users as $data)
-                            <option value="{{ $data->id }}">{{ $data->name }}</option>
+                            <option value="{{ $data->id }}">{{ $data->nip }} - {{ $data->name }}</option>
                             @endforeach
                         </select>
                     </div>
