@@ -32,11 +32,12 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('user.update', encrypt($user->id)) }}" class="table-button-primary">Edit</a>
                                 @if(!$user->deleted_at)
+                                <a href="{{ route('user.update', encrypt($user->id)) }}" class="table-button-primary">Edit</a>
                                 <a href="{{ route('user.delete', encrypt($user->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
-                                @endif
+                                @elseif($user->deleted_at)
                                 <a href="{{ route('user.restore', encrypt($user->id)) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

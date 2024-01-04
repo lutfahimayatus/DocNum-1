@@ -1,8 +1,9 @@
-const arrow = document.querySelectorAll(".arrow");
+const iconLinks = document.querySelectorAll(".icon-link");
 
-for (let i = 0; i < arrow.length; i++) {
-    arrow[i].addEventListener("click", (e) => {
-        const subMenu = e.target.closest("li").querySelector(".sub-menu");
+for (let i = 0; i < iconLinks.length; i++) {
+    iconLinks[i].addEventListener("click", (e) => {
+        const subMenu = e.currentTarget.querySelector(".sub-menu");
+        
         if (subMenu) {
             subMenu.classList.toggle("showMenu");
         }
