@@ -37,7 +37,7 @@
                         @enderror
                     </div>
                     <div class="input-wrapper">
-                        <label class="input-label" for="inputField">No Telpon</label>
+                        <label class="input-label" for="inputField">Nomor Telepon</label>
                         <input class="input" type="number" id="nomor_hp" name="nomor_hp" value="{{ $user[0]->nomor_hp }}">
                         @error('nomor_hp')
                             <span class="invalid-feedback" role="alert">
@@ -46,7 +46,7 @@
                         @enderror
                     </div>
                     <div class="input-wrapper">
-                        <label class="input-label" for="inputField">NIP</label>
+                        <label class="input-label" for="inputField">Nomor Induk Pegawai</label>
                         <input class="input" type="text" id="nip" name="nip" value="{{ $user[0]->nip }}">
                         @error('nip')
                             <span class="invalid-feedback" role="alert">
@@ -81,7 +81,7 @@
                                 @endif
                             @endforeach
                             @if (!$hasSelectedOption)
-                                <option value="0" selected>No Division</option>
+                                <option value="0" selected>Tanpa Divisi</option>
                             @endif
                         </select>
                         @error('divisi_id')
@@ -92,7 +92,7 @@
                     </div>                          
                 </div>
             </div>
-            <button type="submit">Simpan</button>
+            <button style="width: 200px; float: right;" type="submit">Edit Profil</button>
         </form>
     </div>
 </div>

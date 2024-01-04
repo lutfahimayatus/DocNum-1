@@ -10,7 +10,7 @@
             <div class="input-wrapper">
                 <label class="input-label" for="inputField">Kategori</label>
                 <select name="category" id="category" class="input" onchange="filterJenisOptions()">
-                    <option value="" selected>Pilih Category</option>
+                    <option value="" selected>Pilih Kategori Dokumen</option>
                     @foreach ($kategori as $data)
                     <option value="{{ $data->id }}">{{ $data->desc }}</option>
                     @endforeach
@@ -20,7 +20,7 @@
             <div class="input-wrapper">
                 <label class="input-label" for="inputField">Jenis</label>
                 <select name="jenis" id="jenis" class="input" disabled>
-                    <option value="" selected>Pilih Jenis</option>
+                    <option value="" selected>Pilih Jenis Dokumen</option>
                     @foreach ($jenis as $data)
                         <option value="{{ $data->id }}" data-category="{{ $data->category_id }}">{{ $data->jenis }}</option>
                     @endforeach
@@ -33,8 +33,8 @@
             </div>
 
             <div class="input-wrapper">
-                <label class="input-label" for="inputField" class="input-label" for="inputField">Judul Dokumen</label>
-                <input type="text" name="document" id="document" class="input">
+                <label class="input-label" for="inputField" class="input-label" for="inputField">Judul</label>
+                <input type="text" name="document" id="document" class="input" placeholder="Masukkan Judul Dokumen">
                 @error('document')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

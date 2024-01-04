@@ -24,7 +24,7 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField"class="input-label" for="inputField">Jenis</label>
-                <input type="text" name="jenis" id="jenis" class="input">
+                <input placeholder="Masukkan Jenis Dokumen" type="text" name="jenis" id="jenis" class="input">
                 @error('jenis')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -34,7 +34,7 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField"class="input-label" for="inputField">Kode</label>
-                <input type="text" name="kode" id="kode" class="input">
+                <input placeholder="Masukkan Kode Jenis" type="text" name="kode" id="kode" class="input">
                 @error('kode')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -42,7 +42,7 @@
                 @enderror
             </div>
         
-            <button type="submit">Add Jenis</button>
+            <button type="submit">Tambah Jenis</button>
         </form>
     </div>
 </div>

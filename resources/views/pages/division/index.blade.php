@@ -13,7 +13,7 @@
                         <th>Kode</th>
                         <th>Divisi</th>
                         <th>Status</th>
-                        <th>Opsi</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +32,7 @@
                             <td>
                                 <a href="{{ route('div.update', encrypt($div->id)) }}" class="table-button-primary">Edit</a>
                                 @if(!$div->deleted_at)
-                                <a href="{{ route('div.delete', encrypt($div->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
+                                <a href="{{ route('div.delete', encrypt($div->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Delete</a>
                                 @endif
                                 <a href="{{ route('div.restore', encrypt($div->id)) }}" class="table-button-success" onclick="return confirm('Are you sure?')">Restore</a>
                             </td>

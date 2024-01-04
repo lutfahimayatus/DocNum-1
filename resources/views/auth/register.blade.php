@@ -10,7 +10,7 @@
             <div class="input-wrapper">
                 <div class="input-group">
                     <label for="nip">NIP</label>
-                    <input type="number" id="nip" name="nip" placeholder="Masukkan Nomor NIP" required>
+                    <input type="number" id="nip" name="nip" placeholder="Masukkan Nomor Induk Pegawai" required>
                     @error('nip')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -59,11 +59,11 @@
 
             <br>
 
-            <button type="submit">Register</button>
+            <button type="submit">Daftar</button>
         </form>
 
         <div class="akun">
-            <p>Already have an account? <a href="{{ route('login') }}">Login</a></p>
+            <p>Sudah punya akun? <a href="{{ route('login') }}">Masuk</a></p>
         </div>
 
     </div>

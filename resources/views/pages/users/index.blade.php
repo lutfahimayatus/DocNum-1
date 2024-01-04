@@ -5,20 +5,22 @@
 <div class="content">
     <div class="main">
         <div class="table-responsive">
-            <a href="{{ route('user.create') }}" class="table-button">Add User</a>
+            <a href="{{ route('user.create') }}" class="table-button">Tambah User</a>
             <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>No</th>
+                        <th>Nama</th>
                         <th>NIP</th>
                         <th>Role</th>
                         <th>Status</th>
-                        <th>Opsi</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $user)
                         <tr>
+                            <td class="align-middle">{{ $loop->iteration}}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->nip }}</td>
                             <td>{{ $user->role }}</td>

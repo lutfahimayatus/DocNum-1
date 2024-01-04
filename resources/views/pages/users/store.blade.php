@@ -16,8 +16,8 @@
                 </div>
             @endif
             <div class="input-wrapper">
-                <label class="input-label" for="inputField">Name</label>
-                <input type="text" name="name" id="name" class="input">
+                <label class="input-label" for="inputField">Nama Lengkap</label>
+                <input placeholder="Masukkan Nama Lengkap" type="text" name="name" id="name" class="input">
                 @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -27,7 +27,7 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField">Email</label>
-                <input type="email" name="email" id="email" class="input">
+                <input placeholder="Masukkan Alamat Email" type="email" name="email" id="email" class="input">
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -36,8 +36,8 @@
             </div>
         
             <div class="input-wrapper">
-                <label class="input-label" for="inputField"class="input-label" for="inputField">NIP</label>
-                <input type="number" name="nip" id="nip" class="input">
+                <label class="input-label" for="inputField"class="input-label" for="inputField">Nomor Induk Pegawai</label>
+                <input placeholder="Masukkan Nomor Induk Pegawai" type="number" name="nip" id="nip" class="input">
                 @error('nip')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -46,8 +46,8 @@
             </div>
 
             <div class="input-wrapper">
-                <label class="input-label" for="inputField"class="input-label" for="inputField">Nomor HP</label>
-                <input type="number" name="nomor_hp" id="nomor_hp" class="input">
+                <label class="input-label" for="inputField"class="input-label" for="inputField">Nomor Telepon</label>
+                <input placeholder="Masukkan Nomor Telepon" type="number" name="nomor_hp" id="nomor_hp" class="input">
                 @error('nomor_hp')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -85,9 +85,9 @@
             </div>
         
             <div class="input-wrapper">
-                <label class="input-label" for="inputField">Password</label>
+                <label class="input-label" for="inputField">Kata Sandi</label>
                 <div class="input-group">
-                    <input type="password" name="password" id="password" class="input">
+                    <input placeholder="Masukkan Kata Sandi" type="password" name="password" id="password" class="input">
                     <i class="toggle-password-icon far fa-eye" data-target="password"></i>
                 </div>
                 @error('password')
@@ -98,14 +98,14 @@
             </div>
         
             <div class="input-wrapper">
-                <label class="input-label" for="inputField">Confirm Password</label>
+                <label class="input-label" for="inputField">Konfirmasi Kata Sandi</label>
                 <div class="input-group">
-                    <input type="password" name="password_confirmation" id="password_confirmation" class="input">
+                    <input  placeholder="Konfirmasi Kata Sandi" type="password" name="password_confirmation" id="password_confirmation" class="input">
                     <i class="toggle-password-icon far fa-eye" data-target="password_confirmation"></i>
                 </div>
             </div>
         
-            <button type="submit">Add User</button>
+            <button type="submit">Tambah User</button>
         </form>
     </div>
 </div>

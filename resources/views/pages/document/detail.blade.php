@@ -36,29 +36,29 @@
                 <div class="timeline">
                     <div class="stage @if(in_array($data[0]->status, ['belum_upload'])) stage-done @else stage-done @endif">
                         <div class="circle"></div>
-                        <div class="description">Belum Upload</div>
+                        <div style="font-size: 14px;" class="description">Belum Upload</div>
                     </div>
                     <div class="stage @if(in_array($data[0]->status, ['sudah_upload', 'verifikasi_berkas', 'disposisi', 'selesai'])) stage-done @else stage-pending @endif">
                         <div class="circle"></div>
-                        <div class="description">Sudah Upload</div>
+                        <div style="font-size: 14px;" class="description">Sudah Upload</div>
                     </div>
                     <div class="stage @if(in_array($data[0]->status, ['verifikasi_berkas', 'disposisi', 'selesai'])) stage-done @else stage-pending @endif">
                         <div class="circle"></div>
-                        <div class="description">Verifikasi Dokumen</div>
+                        <div style="font-size: 14px;" class="description">Verifikasi Dokumen</div>
                     </div>
                     <div class="stage @if(in_array($data[0]->status, ['disposisi', 'selesai'])) stage-done @else stage-pending @endif">
                         <div class="circle"></div>
-                        <div class="description">Disposisi</div>
+                        <div style="font-size: 14px;" class="description">Disposisi</div>
                     </div>
                     <div class="stage @if(in_array($data[0]->status, ['selesai'])) stage-done @else stage-pending @endif">
                         <div class="circle"></div>
-                        <div class="description">Selesai</div>
+                        <div style="font-size: 14px;" class="description">Selesai</div>
                     </div>
                 </div>
             </div>    
             <br>
             <br>
-            <a href="{{Auth::user()->role === 'administrator' ? route('document.index') : route('employee.document') }}">
+            <a style="font-size: 14px; width: 200px; float: right; height: 30px;" href="{{Auth::user()->role === 'administrator' ? route('document.index') : route('employee.document') }}">
                 <span class="text">Kembali</span>
             </a>  
 

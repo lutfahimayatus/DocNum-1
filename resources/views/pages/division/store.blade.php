@@ -9,7 +9,7 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField"class="input-label" for="inputField">Kode</label>
-                <input type="text" name="kode" id="kode" class="input">
+                <input placeholder="Masukkan Kode Divisi" type="text" name="kode" id="kode" class="input">
                 @error('kode')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -19,7 +19,7 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField"class="input-label" for="inputField">Divisi</label>
-                <input type="text" name="divisi" id="divisi" class="input">
+                <input placeholder="Masukkan Nama Divisi" type="text" name="divisi" id="divisi" class="input">
                 @error('divisi')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -27,7 +27,7 @@
                 @enderror
             </div>
         
-            <button type="submit">Add Divisions</button>
+            <button type="submit">Tambah Divisi</button>
         </form>
     </div>
 </div>

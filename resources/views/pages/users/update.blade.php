@@ -8,8 +8,8 @@
             @csrf
             @method('POST')
             <div class="input-wrapper">
-                <label class="input-label" for="inputField">Name</label>
-                <input type="text" name="name" id="name" class="input" value="{{ $user[0]->name }}" required>
+                <label class="input-label" for="inputField">Nama Lengkap</label>
+                <input placeholder="Masukkan Nama Lengkap" type="text" name="name" id="name" class="input" value="{{ $user[0]->name }}" required>
                 @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -19,7 +19,7 @@
 
             <div class="input-wrapper">
                 <label class="input-label" for="inputField">Email</label>
-                <input type="email" name="email" id="email" class="input" value="{{ $user[0]->email }}">
+                <input placeholder="Masukkan Alamat Email" type="email" name="email" id="email" class="input" value="{{ $user[0]->email }}">
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -28,8 +28,8 @@
             </div>
         
             <div class="input-wrapper">
-                <label class="input-label" for="inputField"class="input-label" for="inputField">NIP</label>
-                <input type="text" name="nip" id="nip" class="input"  value="{{ $user[0]->nip }}">
+                <label class="input-label" for="inputField"class="input-label" for="inputField">Nomor Induk Pegawai</label>
+                <input placeholder="Masukkan Nomor Induk Pegawai" type="text" name="nip" id="nip" class="input"  value="{{ $user[0]->nip }}">
                 @error('nip')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -38,8 +38,8 @@
             </div>
 
             <div class="input-wrapper">
-                <label class="input-label" for="inputField"class="input-label" for="inputField">Nomor HP</label>
-                <input type="number" name="nomor_hp" id="nomor_hp" class="input" value="{{ $user[0]->nomor_hp }}">
+                <label class="input-label" for="inputField"class="input-label" for="inputField">Nomor Telepon</label>
+                <input placeholder="Masukkan Nomor Telepon" type="number" name="nomor_hp" id="nomor_hp" class="input" value="{{ $user[0]->nomor_hp }}">
                 @error('nomor_hp')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

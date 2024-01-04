@@ -14,7 +14,7 @@
     <div class="container">
         <div class="logo-container">
             <div class="logo">
-                <img src="{{ asset('assets/img/logo.png')}}" alt="">
+                <img src="{{ asset('assets/img/logo.png')}}" alt="" style=" width: 150px">
             </div>
         </div>
         <hr>

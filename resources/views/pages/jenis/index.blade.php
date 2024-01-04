@@ -5,16 +5,16 @@
 <div class="content">
     <div class="main">
         <div class="table-responsive">
-            <a href="{{ route('jenis.create') }}" class="table-button">Add Jenis</a>
+            <a href="{{ route('jenis.create') }}" class="table-button">Tambah Jenis</a>
             <table id="myTable" class="styled-table">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Kode</th>
-                        <th>Jenis</th>
+                        <th width="50px">Jenis</th>
                         <th>Kategori</th>
                         <th>Status</th>
-                        <th>Opsi</th>
+                        <th width="800px">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

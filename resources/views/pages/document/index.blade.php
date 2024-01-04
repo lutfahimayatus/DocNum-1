@@ -5,12 +5,12 @@
 <div class="content">
     @if(Auth::user()->role === 'administrator')
     <div class="card-history">
-        <div class="card-container">
+        <div style="margin-left: 5px;" class="card-container">
             <div class="card-content">
                 <div class="card-saperate">
                     <div class="card-info">
                         <h1 class="angka">{{ $totalDoc }}</h1>
-                        <p class="judul">Jumlah No. Surat</p>
+                        <p class="judul">Jumlah Nomor Surat</p>
                     </div>
                     <div class="card-img">
                         <img src="{{ asset('assets/img/mail.png')}}" alt="">
@@ -71,47 +71,53 @@
                         <th>Nama Dokumen</th>
                         <th>User Log</th>
                         <th>Tgl Generate</th>
-                        <th>Status</th>
                         <th>Dokumen</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $dt)
                         <tr>
-                            <td>{{ $dt->jenis->category->desc}}</td>
-                            <td>{{ $dt->document_number}}</td>
-                            <td>{{ $dt->jenis->kode}}</td>
-                            <td>{{ $dt->document}}</td>
-                            <td>{{ $dt->user->nip ?? 'NIP Not Found'}} - {{ $dt->user->name ?? 'Name Not Found' }}</td>
-                            <td>{{ $dt->created_at}}</td>
-                            <td>
-                                @if($dt->status == 'belum_upload')
-                                    <span class="badge badge-warning">Belum Upload</span>
-                                @elseif($dt->status == 'sudah_upload')
-                                    <span class="badge badge-primary">Sudah Upload</span>
-                                @elseif($dt->status == 'verifikasi_berkas')
-                                    <span class="badge badge-primary">Verifikasi Berkas</span>
-                                @elseif($dt->status == 'disposisi')
-                                    <span class="badge badge-primary">Disposisi</span>
-                                @elseif($dt->status == 'selesai')
-                                    <span class="badge badge-success">Selesai</span>
-                                @endif
-                            </td>                            
-                            <td>
-                                <a href="{{ route('document.update', encrypt($dt->id)) }}" class="table-button-primary">Edit</a>
-                                @if(!$dt->deleted_at)
-                                <a href="{{ route('document.delete', encrypt($dt->id)) }}" class="table-button-danger" onclick="return confirm('Are you sure?')">Soft Delete</a>
-                                @endif
-                                <a href="{{ route('document.download.single', $dt->id) }}" class="table-button-primary">Download</a>
-                            </td>
+                            <td>{{ $dt->jenis->category->desc }}</td>
+                            <td>{{ $dt->document_number }}</td>
+                            <td>{{ $dt->jenis->kode }}</td>
+                            <td>{{ $dt->document }}</td>
+                            <td>{{ $dt->user->nip ?? 'NIP Not Found' }} - {{ $dt->user->name ?? 'Name Not Found' }}</td>
+                            <td>{{ $dt->created_at }}</td>
+                            <td style="white-space: nowrap;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div style="display: flex; flex-direction: row; align-items: center;">
+            @if($dt->status == 'belum_upload')
+                <span class="badge badge-warning">Belum Upload</span>
+            @elseif($dt->status == 'sudah_upload')
+                <span class="badge badge-primary">Sudah Upload</span>
+            @elseif($dt->status == 'verifikasi_berkas')
+                <span class="badge badge-primary">Verifikasi Berkas</span>
+            @elseif($dt->status == 'disposisi')
+                <span class="badge badge-primary">Disposisi</span>
+            @elseif($dt->status == 'selesai')
+                <span class="badge badge-success">Selesai</span>
+            @endif
+        </div>
+        <div style="border-top: 1.5px solid white; width: 100%; margin: 5px 0;"></div>
+        <div style="margin-top: 5px;" class="table-buttons">
+            <a href="{{ route('document.update', encrypt($dt->id)) }}" class="badge badge-primary"><i class="fas fa-edit"></i></a>
+            @if(!$dt->deleted_at)
+            <a href="{{ route('document.delete', encrypt($dt->id)) }}" class="badge badge-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+            @endif
+            <a href="{{ route('document.download.single', $dt->id) }}" class="badge badge-success"> <i class="fas fa-download"></i></a>
+        </div>
+    </div>
+</td>
+
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+
         </div>   
         @else
         <div class="document-wrapper">   
-            <h4>Download Report</h4>
+            <h5>Download Report</h5>
             <form action="{{ route('employee.download.report')}}" method="POST">
                 @csrf
                 <div class="form-group">
@@ -119,14 +125,14 @@
                         <input type="text" name="daterange" id="daterange" class="input" autocomplete="off" />
                     </div>
                     <div class="input-group">
-                        <button class="input" type="submit">
+                        <button style="font-size: 12px;" class="input" type="submit">
                             Download
                         </button>
                     </div>
                 </div>
             </form>
 
-            <h4>Search Documents</h4>
+            <h5>Search Documents</h5>
             <form action="{{ route('search.documents') }}" method="GET">
                 <div class="form-group">
                     <div class="input-group">
@@ -142,7 +148,7 @@
                             <option value="100" {{ $showEntries == 100 ? 'selected' : '' }}>100</option>
                         </select>
                     </div>
-                    <div class="input-group">
+                    <div style="font-size: 12px;" class="input-group">
                         <button type="submit">Search</button>
                     </div>
                 </div>
@@ -157,9 +163,9 @@
                 @foreach ($data as $dokumen)
                 <div class="card-document">
                     <div class="topbar">
-                        <h1>{{ $dokumen->document }}</h1>
+                        <h5>{{ $dokumen->document }}</h5>
                         <a href="#" class="menu-toggle" data-id="{{ $dokumen->id }}">
-                            <i class='bx bx-menu'></i>
+                            <i style="color: black;" class='bx bx-menu'></i>
                         </a>
                     </div>
                     <div id="menu-{{ $dokumen->id }}" class="menu" style="display: none;">

@@ -8,7 +8,8 @@
 body, html {
     font-family: 'Nunito Sans', sans-serif;
     height: 100%;
-    background: red;
+    background: #ffffff;
+    overflow-y: auto;
 }
 
 a {
@@ -116,22 +117,29 @@ a {
     font-weight: bold; /* You can adjust the text style */
 }
 
+.scrollable-sidebar {
+    max-height: 80vh;
+}
+
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
+    width: 250px;
+    transition: 0.3s;
     height: 100%;
-    width: 339px;
-    background: #fff;
+    position: fixed;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 60px;
 }
 
 .logo-name {
-    width: 232px;
-    height: 55px;
+    width: 139px;
+    height: 33px;
 }
 
 .sidebar .logo-details {
-    height: 60px;
+    height: 10px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -139,16 +147,16 @@ a {
 }
 
 .sidebar .logo-details a > i {
-    font-size: 25px;
+    font-size: 20px;
     color: #000;
-    height: 50px;
-    max-width: 78px;
+    height: 30px;
+    max-width: 47px;
     text-align: center;
-    line-height: 50px;
+    line-height: 30px;
 }
 
 .sidebar .logo-details .logo {
-    width: 175px; 
+    width: 150px; 
     height: auto;
     display: block;
     margin: 25px;  
@@ -160,7 +168,7 @@ a {
 
 .input-group i {
     position: absolute;
-    right: 10px; /* Adjust the right value to control the icon's position */
+    right: 0px; /* Adjust the right value to control the icon's position */
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -168,6 +176,7 @@ a {
 
 .input-group input {
     padding-right: 30px; /* Adjust the padding-right to leave space for the icon */
+    font-size: 12px;
 }
 
 .sidebar .nav-links {
@@ -186,18 +195,18 @@ a {
 .sidebar .nav-links li {
     display: flex;
     margin: 15px 15px 15px 15px;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: background-color 0.3s; /* Add a transition effect for background-color change */
 }
 
 .sidebar .nav-links li:hover {
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #B42021; /* Change the background color on hover to red or your preferred color */
 }
 
 .sidebar .nav-links .icon {
-    width: 55px;
-    height: 55px;
+    width: 24px;
+    height: 24px;
 }
 
 .sidebar .nav-links li .icon-link {
@@ -215,7 +224,7 @@ a {
 }
 
 .sidebar .nav-links li i {
-    font-size: 20px;
+    font-size: 14px;
     color: #000;
     height: 50px;
     max-width: 78px;
@@ -240,6 +249,7 @@ a {
 .sidebar .nav-links .icon-link .sub-menu li:hover a ,
 .sidebar .nav-links li:hover a {
     color: white;
+
 }
 
 .sidebar .nav-links li:hover i {
@@ -247,7 +257,7 @@ a {
 }
 
 .sidebar .nav-links li.active {
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #B42021;
 }
 
@@ -257,7 +267,7 @@ a {
 }
 
 .sidebar .nav-links li a .link_name {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
 }
 
@@ -282,12 +292,12 @@ a {
 }
 
 .sidebar .nav-links li:hover .sub-menu li:hover {
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: white;
 }
 
 .sidebar .nav-links li .sub-menu li.active {
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: white;
 }
 
@@ -312,8 +322,9 @@ a {
 }
 
 .item-option {
-    margin-right: 10px;
+    margin-right: 5px;
     padding: 5px;
+    font-size: 12px;
 }
 
 .sidebar .nav-links li .sub-menu.showMenu {
@@ -328,7 +339,7 @@ a {
     left: 0;
     background-color: white;
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 5px;
     z-index: 1;
     animation: fadeIn 0.5s ease forwards;
 }
@@ -353,7 +364,7 @@ a {
 
 .sidebar .nav-links li .sub-menu a {
     color: #000;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: bold;
     padding: 10px 35px 10px 15px;
 }
@@ -367,11 +378,11 @@ a {
 /* class main */
 .home-section {
     position: relative;
-    left: 339px;
+    left: 250px;
     right: 0;
     top: 0;
     bottom: 0;
-    width: calc(100% - 339px);
+    width: calc(100% - 250px);
     background: #F0F2F3;
     transition: all 0.5s ease;
     height: 100%;
@@ -386,7 +397,7 @@ a {
 
 .home-section .hero {
     background: #B42021;
-    max-height: 100px;
+    max-height: 200px;
     padding: 10px;
     flex-direction: row;
 }
@@ -397,7 +408,8 @@ a {
 }
 
 .home-section .hero .navbar .navbar-container {
-    margin-right: 75px;
+    margin-right: 10px;
+    margin-left: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -416,7 +428,7 @@ a {
     border: none;
     padding-left: 30px;
     padding-right: 30px;
-    font-size: 18px;
+    font-size: 12px;
 }
 
 .hero .navbar .search input:focus{
@@ -435,7 +447,7 @@ a {
 
 .profile p {
     color: #fff;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 550;
     padding-right: 10px;
 }
@@ -512,25 +524,26 @@ a {
 
 .content {
     display: block;
-    padding: 10px;
-    margin-top: 75px;
+    padding: 5px;
+    margin-top: 25px;
     flex-direction: row;
 }
 
 .content .main {
     display: flex;
-    margin-left: 75px;
-    margin-right: 75px;
+    margin-left: 20px;
+    margin-right: 20px;
     background: #FFF;
-    min-height: 450px;
-    border-radius: 10px;
+    min-height: 0px;
+    border-radius: 8px;
     transition: all 0.5s ease;
     justify-content: space-between;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow size */  
 }
 
 .content .main .text-main {
-    margin: 100px;
+    margin: 50px;
+    height: 200px;
 }
 
 .content .main .form-wrapper {
@@ -582,16 +595,16 @@ a {
 }
 
 .profile-wrapper .picture-wrapper .profile-case .foto-profile {
-    width: 250px;
-    height: 250px;
+    width: 290px;
+    height: 290px;
     border: 1px solid #ccc;
     margin: 10px;
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 .profile .wrapper {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     background: #fff;
     display: flex;
@@ -612,7 +625,7 @@ a {
 }
 
 .card-document {
-    border-radius: 10px;
+    border-radius: 8px; 
     padding: 25px;
     background-color: #fff;
     box-shadow: 0 0 15px rgba(78, 78, 78, 0.6);
@@ -627,6 +640,7 @@ a {
 .document-wrapper .card-document .content-document {
     display: flex;
     justify-content: space-between;
+    font-size: 12px;
 }
 
 .document-wrapper .card-document .content-footer a{
@@ -645,15 +659,15 @@ a {
 }
 
 .document-wrapper .card-document .content-footer p{
-    font-size: 20px;
+    font-size: 12px;
 }
 
 .content .main .form-wrapper .input-wrapper .input {
     width: 100%;
     border: none;
-    padding: 15px; /* Adjust the padding as needed */
+    padding: 8px; /* Adjust the padding as needed */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+    border-radius: 8px;
     box-sizing: border-box; /* Include padding and border in the element's total width */
 }
 
@@ -776,16 +790,18 @@ a {
   
 .content .main .form-wrapper .input-wrapper .input-label {
     font-weight: bold;
+    font-size: 14px;
 }
 
 .content .main .form-wrapper button {
     width: 100%;
-    height: 45px;
+    height: 30px;
     margin-top: 10px;
     border-radius: 10px;
     color: white;
     background-color: #B42021;
     border: none;
+    font-size: 14px;
 }
 
 .badge.badge-primary {
@@ -796,7 +812,7 @@ a {
 }
 
 .badge.badge-warning {
-    background-color: rgb(220, 181, 53);
+    background-color: #FFA500;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -893,12 +909,12 @@ hr {
 }
 
 .content .main .form-wrapper .input-wrapper {
-    margin-top: 15px;
+    margin-top: 0px;
     margin-bottom: 15px;
 }
 
 .content .main .text-main .button {
-    font-size: 19px;
+    font-size: 14px;
     font-weight: 550;
     padding: 10px;
     border-radius: 10px;
@@ -973,11 +989,12 @@ hr {
 
 .styled-table th {
     color: #fff;
-    margin-top: 10px;
+    margin-top: 0px;
     background-color: #B42021;
     border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+    text-align: center;
+    align-content: center;
+    padding: 0px;
     font-size: 14px; 
 }
 
@@ -986,7 +1003,7 @@ hr {
     background-color: #b4202080;
     border: 1px solid #dddddd;
     text-align: left;
-    padding: 8px;
+    padding: 0px;
     font-size: 12px; 
 }
 
@@ -1000,7 +1017,8 @@ hr {
     align-items: center;
     list-style: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 0px 0;
+    font-size: 12px;
 }
 
 .pagination li {
@@ -1065,7 +1083,7 @@ hr {
 .close .content .main img {
     max-width: 75%; 
     height: auto; 
-    margin: 50px;
+    margin: 10px;
     position: relative;
     transition: all 0.5s ease;
 }
@@ -1081,12 +1099,12 @@ hr {
 
 .home-section .card-container {
     background: #fff;
-    margin: 25px;
+    margin: 20px;
     width: 100%;
     min-height: 100px;
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: all 0.5s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
@@ -1102,16 +1120,16 @@ hr {
 .home-section .card-container a{
     background: #B42021;
     color: #FFF;
-    padding: 15px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    padding: 12px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
 }
 
 .home-section .card-container .card-content{
     background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    min-height: 100px;
+    padding: 10px;
+    border-radius: 8px;
+    min-height: 0px;
 }
 
 .home-section .card-container .card-content .card-saperate {
@@ -1132,28 +1150,28 @@ hr {
 }
 
 .home-section .card-container .card-content i {
-    font-size: 40px;
+    font-size: 6px;
 }
 
 .home-section .card-container .card-content .card-info {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
     text-align: center;
 }
 
 .home-section .card-container .card-content .card-info .judul{
-    font-size: medium;
+    font-size: 14px;
     text-align: center;
-    font-weight: 550;
+    font-weight: 500;
 }
 
 .home-section .card-container .card-content .card-info .angka {
-    font-size: large;
-    min-height: 68px;
+    font-size: 22px;
+    min-height: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
 }
 
 .home-section .card-container .card-content img {
@@ -1173,7 +1191,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 25px;
+    margin-right: 0px;
     height: 100%;
 }
 
@@ -1230,15 +1248,15 @@ p {
 }
 
 .card {
-    margin-left: 60px;
-    margin-right: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
     display: flex;
     justify-content: space-between;
 }
 
 .card-history {
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 18px;
+    margin-right: 0px;
     display: flex;
 }
 
